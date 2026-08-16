@@ -89,18 +89,18 @@ export default function SiteNav({
     { label: 'Companies', to: '/companies' },
     { label: 'Recruiters', to: '/recruiters' },
     { label: 'Blog', to: '/blog' },
-    { label: 'Open Roles', to: '/roles', count: liveCount },
+    { label: 'Active Roles', to: '/roles', count: liveCount },
   ]
 
-  const currentActive = activeLink ?? links.find((l) => l.to === location.pathname)?.label ?? ''
+  const currentActive = activeLink ?? (location.pathname === '/roles' ? 'Active Roles' : links.find((l) => l.to === location.pathname)?.label ?? '')
 
   return (
     <>
       <nav
         className={`${variant === 'fixed' ? 'fixed' : 'absolute'} top-0 left-0 right-0 z-50 flex items-center justify-between px-5 md:px-10 transition-all duration-300`}
         style={{
-          paddingTop: '0.2rem',
-          paddingBottom: '0.2rem',
+          paddingTop: '0.35rem',
+          paddingBottom: '0.35rem',
           background: scrolled || menuOpen
             ? 'linear-gradient(160deg, rgba(14,24,48,0.96) 0%, rgba(10,18,36,0.94) 100%)'
             : 'linear-gradient(160deg, rgba(14,24,48,0.52) 0%, rgba(10,18,36,0.24) 100%)',
@@ -113,23 +113,22 @@ export default function SiteNav({
         }}
       >
         {/* Logo */}
-        <Link to="/" className="flex flex-col" style={{ alignItems: 'flex-start' }}>
+        <Link to="/" className="flex flex-col group" style={{ alignItems: 'flex-start' }}>
           <img
             src={logoImage}
             alt="Heroscouter"
+            className="h-[4.2rem] sm:h-[5rem] md:h-[5.5rem] w-auto transition-transform duration-200 group-hover:scale-[1.02]"
             style={{
-              height: '4.5rem',
-              width: 'auto',
               display: 'block',
-              marginLeft: '-12px',
-              marginBottom: '-8px',
-              marginTop: '-6px',
-              filter: 'brightness(0) invert(1) drop-shadow(0 1px 6px rgba(0,0,0,0.55))',
+              marginLeft: '-10px',
+              marginBottom: '-10px',
+              marginTop: '-8px',
+              filter: 'brightness(0) invert(1) drop-shadow(0 2px 8px rgba(0,0,0,0.6))',
             }}
           />
           <span
-            className="text-xs font-semibold uppercase"
-            style={{ color: '#D98A3D', letterSpacing: '0.18em', paddingLeft: '10px' }}
+            className="text-[11px] sm:text-xs font-semibold uppercase tracking-wider"
+            style={{ color: '#D98A3D', letterSpacing: '0.18em', paddingLeft: '12px', marginTop: '-2px' }}
           >
             Hiring, done properly
           </span>

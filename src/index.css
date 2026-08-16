@@ -50,27 +50,27 @@ body {
   font-family: 'Fraunces', Georgia, serif;
   font-weight: 500;
   color: #22262B;
-  margin-top: 1.35rem;
-  margin-bottom: 0.6rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
   line-height: 1.3;
 }
 .hs-prose h1:first-child, .hs-prose h2:first-child, .hs-prose h3:first-child, .hs-prose h4:first-child {
   margin-top: 0;
 }
-.hs-prose h1 { font-size: 1.15rem; }
-.hs-prose h2 { font-size: 1.05rem; }
-.hs-prose h3 { font-size: 0.975rem; }
-.hs-prose h4 { font-size: 0.9rem; }
+.hs-prose h1 { font-size: 1.35rem; }
+.hs-prose h2 { font-size: 1.22rem; }
+.hs-prose h3 { font-size: 1.1rem; }
+.hs-prose h4 { font-size: 1rem; }
 .hs-prose p {
-  color: #4A5059;
-  line-height: 1.72;
-  margin-bottom: 0.7rem;
-  font-size: 0.88rem;
+  color: #323842;
+  line-height: 1.82;
+  margin-bottom: 1rem;
+  font-size: 1.05rem;
 }
 .hs-prose ul, .hs-prose ol {
-  margin-top: 0.35rem;
-  margin-bottom: 1rem;
-  padding-left: 1.25rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1.25rem;
+  padding-left: 1.35rem;
 }
 .hs-prose ul {
   list-style-type: disc;
@@ -80,15 +80,15 @@ body {
 }
 .hs-prose li {
   display: list-item;
-  color: #4A5059;
-  line-height: 1.65;
-  font-size: 0.88rem;
-  margin-bottom: 0.42rem;
-  padding-left: 0.2rem;
+  color: #323842;
+  line-height: 1.78;
+  font-size: 1.02rem;
+  margin-bottom: 0.55rem;
+  padding-left: 0.25rem;
 }
 .hs-prose li::marker {
   color: #C8923A;
-  font-size: 0.78em;
+  font-size: 0.85em;
 }
 .hs-prose li p {
   display: inline;
@@ -100,14 +100,14 @@ body {
 .hs-prose ol + ol {
   margin-top: -0.55rem;
 }
-.hs-prose strong { color: #22262B; font-weight: 600; }
+.hs-prose strong { color: #15181C; font-weight: 600; }
 .hs-prose a { color: #C8923A; text-decoration: underline; text-underline-offset: 2px; }
 .hs-prose a:hover { color: #A06C20; }
 
 .role-detail-prose {
   font-family: 'Inter', system-ui, sans-serif;
-  font-size: 1rem;
-  line-height: 1.75;
+  font-size: 1.125rem;
+  line-height: 1.85;
   color: #26303B;
 }
 
@@ -125,31 +125,33 @@ body {
   color: #07152A;
   letter-spacing: 0;
   line-height: 1.25;
-  margin-top: 1.35rem;
-  margin-bottom: 0.65rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
 }
 
-.role-detail-prose h1 { font-size: 1.5rem; }
-.role-detail-prose h2 { font-size: 1.375rem; }
-.role-detail-prose h3 { font-size: 1.125rem; }
-.role-detail-prose h4 { font-size: 1rem; }
+.role-detail-prose h1 { font-size: 1.65rem; }
+.role-detail-prose h2 { font-size: 1.45rem; }
+.role-detail-prose h3 { font-size: 1.25rem; }
+.role-detail-prose h4 { font-size: 1.1rem; }
 
 .role-detail-prose p {
   color: #26303B;
-  margin: 0 0 1rem;
-  line-height: 1.75;
+  margin: 0 0 1.2rem;
+  line-height: 1.85;
+  font-size: 1.125rem;
 }
 
 .role-detail-prose ul,
 .role-detail-prose ol {
-  margin: 0.35rem 0 1.1rem 1.35rem;
+  margin: 0.5rem 0 1.25rem 1.5rem;
 }
 
 .role-detail-prose li {
   color: #26303B;
-  padding-left: 0.3rem;
-  margin: 0.5rem 0;
-  line-height: 1.7;
+  padding-left: 0.35rem;
+  margin: 0.6rem 0;
+  line-height: 1.8;
+  font-size: 1.08rem;
 }
 
 @media print {

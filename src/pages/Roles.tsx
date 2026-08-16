@@ -61,23 +61,46 @@ const SALARY_BUCKETS = [
   { label: 'Over $250k', value: 'ov250' },
 ]
 
+function numericRangeValue(value: string) {
+  const normalized = value.trim().replace(/[$,\s]/g, '').replace(/k$/i, '')
+  if (!normalized || !/^-?\d*(?:\.\d+)?$/.test(normalized)) return null
+  const n = Number(normalized)
+  if (!Number.isFinite(n) || n < 0) return null
+  return n
+}
+
 function salaryFromInput(value: string) {
-  const n = Number(value.replace(/[^0-9.]/g, ''))
+  const n = numericRangeValue(value)
   if (!Number.isFinite(n) || n <= 0) return null
   return n < 1000 ? n * 1000 : n
 }
 
 function matchesSalaryRange(role: Role, min: number | null, max: number | null) {
+  if (min != null && max != null && min > max) return matchesSalaryRange(role, max, min)
   if (min != null && max != null) return role.salaryMax >= min && role.salaryMin <= max
   if (min != null) return role.salaryMax >= min
   if (max != null) return role.salaryMin <= max
   return true
 }
 
-function maxExperienceYears(value: string) {
+function parseExperienceYears(value: string): { min: number; max: number } {
   const nums = value.match(/\d+(?:\.\d+)?/g)?.map(Number).filter((n) => Number.isFinite(n)) ?? []
-  if (!nums.length) return 0
-  return Math.max(...nums)
+  if (!nums.length) return { min: 0, max: 99 }
+  if (nums.length === 1) return { min: nums[0], max: nums[0] }
+  return { min: Math.min(...nums), max: Math.max(...nums) }
+}
+
+function expFromInput(value: string) {
+  return numericRangeValue(value)
+}
+
+function matchesExperienceRange(role: Role, minExp: number | null, maxExp: number | null) {
+  if (minExp != null && maxExp != null && minExp > maxExp) return matchesExperienceRange(role, maxExp, minExp)
+  const { min, max } = parseExperienceYears(role.yoe || '')
+  if (minExp != null && maxExp != null) return max >= minExp && min <= maxExp
+  if (minExp != null) return max >= minExp
+  if (maxExp != null) return min <= maxExp
+  return true
 }
 
 function midUSD(role: Role) {
@@ -153,21 +176,72 @@ interface FilterGroupProps {
 
 function FilterGroup({ groupKey, label, options, selected, roles, onToggle }: FilterGroupProps) {
   const [expanded, setExpanded] = useState(false)
+  const [query, setQuery] = useState('')
   const counts = useMemo(() => getCounts(groupKey, options, roles), [groupKey, options, roles])
-  const shown = expanded ? options : options.slice(0, 6)
+
+  const filteredOptions = useMemo(() => {
+    if (!query.trim()) return options
+    return options.filter((opt) => opt.toLowerCase().includes(query.trim().toLowerCase()))
+  }, [options, query])
+
+  const shown = expanded || query.trim() ? filteredOptions : filteredOptions.slice(0, 6)
 
   return (
     <div style={{ paddingBottom: '18px', borderBottom: '1px solid rgba(34,38,43,0.08)', marginBottom: '18px' }}>
-      <p className="text-xs font-semibold uppercase mb-3" style={{ letterSpacing: '0.13em', color: 'rgba(34,38,43,0.42)' }}>
-        {label}
-      </p>
-      <div className="flex flex-col gap-1.5">
+      <div className="flex items-center justify-between mb-2">
+        <p className="text-xs font-semibold uppercase" style={{ letterSpacing: '0.13em', color: 'rgba(34,38,43,0.42)' }}>
+          {label}
+        </p>
+        {selected.length > 0 && (
+          <span className="text-[11px] font-semibold px-1.5 py-0.2 rounded-full" style={{ background: '#22262B', color: '#F7F4EF' }}>
+            {selected.length}
+          </span>
+        )}
+      </div>
+
+      {/* Company Search Input */}
+      {groupKey === 'company' && options.length > 4 && (
+        <div className="relative mb-2.5">
+          <input
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search company..."
+            className="w-full pl-8 pr-7 py-1.5 text-xs rounded-lg outline-none transition-all"
+            style={{
+              background: '#fff',
+              border: '1px solid rgba(34,38,43,0.12)',
+              color: '#22262B',
+            }}
+          />
+          <svg
+            className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 pointer-events-none"
+            style={{ color: 'rgba(34,38,43,0.38)' }}
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+          </svg>
+          {query && (
+            <button
+              onClick={() => setQuery('')}
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-gray-400 hover:text-gray-600"
+            >
+              ×
+            </button>
+          )}
+        </div>
+      )}
+
+      <div className="flex flex-col gap-1.5 max-h-[220px] overflow-y-auto pr-1">
         {shown.map((opt) => {
           const active = selected.includes(opt)
           return (
             <div
               key={opt}
-              className="flex items-center gap-2.5 cursor-pointer py-0.5"
+              className="flex items-center gap-2.5 cursor-pointer py-0.5 group"
               onClick={(e) => { e.preventDefault(); e.stopPropagation(); onToggle(groupKey, opt) }}
             >
               <div
@@ -179,11 +253,11 @@ function FilterGroup({ groupKey, label, options, selected, roles, onToggle }: Fi
               >
                 {active && (
                   <svg width="9" height="7" viewBox="0 0 9 7" fill="none">
-                    <path d="M1 3.5L3.5 6L8 1" stroke="#F7F4EF" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M1 3.5L3.5 6L8 1" stroke="#F7F4EF" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 )}
               </div>
-              <span className="text-sm flex-1 leading-snug transition-colors duration-150" style={{ color: active ? '#22262B' : '#4A5059', fontWeight: active ? 500 : 400 }}>
+              <span className="text-sm flex-1 leading-snug transition-colors duration-150 group-hover:text-black" style={{ color: active ? '#22262B' : '#4A5059', fontWeight: active ? 500 : 400 }}>
                 {opt}
               </span>
               <span className="text-xs tabular-nums" style={{ color: 'rgba(34,38,43,0.30)' }}>
@@ -192,8 +266,14 @@ function FilterGroup({ groupKey, label, options, selected, roles, onToggle }: Fi
             </div>
           )
         })}
+        {shown.length === 0 && (
+          <p className="text-xs py-2 text-center" style={{ color: 'rgba(34,38,43,0.40)' }}>
+            No companies found
+          </p>
+        )}
       </div>
-      {options.length > 6 && (
+
+      {!query && options.length > 6 && (
         <button
           onClick={(e) => { e.preventDefault(); setExpanded(!expanded) }}
           className="text-xs font-medium mt-2.5 transition-colors duration-150"
@@ -221,76 +301,152 @@ function SalaryRangeFilter({
 }) {
   return (
     <div style={{ paddingBottom: '18px', borderBottom: '1px solid rgba(34,38,43,0.08)', marginBottom: '18px' }}>
-      <p className="text-xs font-semibold uppercase mb-3" style={{ letterSpacing: '0.13em', color: 'rgba(34,38,43,0.42)' }}>
-        Salary
-      </p>
+      <div className="flex items-center justify-between mb-3">
+        <p className="text-xs font-semibold uppercase" style={{ letterSpacing: '0.13em', color: 'rgba(34,38,43,0.42)' }}>
+          Salary (USD)
+        </p>
+        {(minValue || maxValue) && (
+          <button
+            onClick={() => { onMinChange(''); onMaxChange('') }}
+            className="text-[11px] font-medium"
+            style={{ color: '#C8923A' }}
+          >
+            Reset
+          </button>
+        )}
+      </div>
+
       <div className="grid grid-cols-2 gap-2">
         <label className="flex flex-col gap-1">
-          <span className="text-xs" style={{ color: 'rgba(34,38,43,0.48)' }}>Min salary</span>
-          <input
-            type="number"
-            min="0"
-            inputMode="numeric"
-            value={minValue}
-            onChange={(e) => onMinChange(e.target.value)}
-            placeholder="150K"
-            className="w-full rounded-lg px-3 py-2 text-sm outline-none"
-            style={{ background: '#fff', border: '1px solid rgba(34,38,43,0.12)', color: '#22262B' }}
-          />
+          <span className="text-[11px] font-medium" style={{ color: 'rgba(34,38,43,0.55)' }}>Min salary</span>
+          <div className="relative">
+            <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-xs font-medium" style={{ color: 'rgba(34,38,43,0.4)' }}>$</span>
+            <input
+              type="number"
+              min="0"
+              inputMode="numeric"
+              value={minValue}
+              onChange={(e) => onMinChange(e.target.value)}
+              placeholder="e.g. 100"
+              className="w-full rounded-lg pl-6 pr-2 py-2 text-xs outline-none"
+              style={{ background: '#fff', border: '1px solid rgba(34,38,43,0.12)', color: '#22262B' }}
+            />
+          </div>
         </label>
         <label className="flex flex-col gap-1">
-          <span className="text-xs" style={{ color: 'rgba(34,38,43,0.48)' }}>Max salary</span>
-          <input
-            type="number"
-            min="0"
-            inputMode="numeric"
-            value={maxValue}
-            onChange={(e) => onMaxChange(e.target.value)}
-            placeholder="250K"
-            className="w-full rounded-lg px-3 py-2 text-sm outline-none"
-            style={{ background: '#fff', border: '1px solid rgba(34,38,43,0.12)', color: '#22262B' }}
-          />
+          <span className="text-[11px] font-medium" style={{ color: 'rgba(34,38,43,0.55)' }}>Max salary</span>
+          <div className="relative">
+            <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-xs font-medium" style={{ color: 'rgba(34,38,43,0.4)' }}>$</span>
+            <input
+              type="number"
+              min="0"
+              inputMode="numeric"
+              value={maxValue}
+              onChange={(e) => onMaxChange(e.target.value)}
+              placeholder="e.g. 250"
+              className="w-full rounded-lg pl-6 pr-2 py-2 text-xs outline-none"
+              style={{ background: '#fff', border: '1px solid rgba(34,38,43,0.12)', color: '#22262B' }}
+            />
+          </div>
         </label>
       </div>
-      <p className="mt-2 text-xs leading-snug" style={{ color: 'rgba(34,38,43,0.42)' }}>
-        Enter values in thousands, for example 150 for $150K.
+      <p className="mt-2 text-[11px] leading-snug" style={{ color: 'rgba(34,38,43,0.42)' }}>
+        Values in thousands (e.g. 150 for $150K/yr).
       </p>
     </div>
   )
 }
 
-function ExperienceSliderFilter({
-  value,
-  max,
-  onChange,
+function ExperienceRangeFilter({
+  minValue,
+  maxValue,
+  onMinChange,
+  onMaxChange,
 }: {
-  value: number
-  max: number
-  onChange: (value: number) => void
+  minValue: string
+  maxValue: string
+  onMinChange: (value: string) => void
+  onMaxChange: (value: string) => void
 }) {
+  const hasValue = Boolean(minValue || maxValue)
+  const [open, setOpen] = useState(hasValue)
+
+  useEffect(() => {
+    if (hasValue) setOpen(true)
+  }, [hasValue])
+
   return (
     <div style={{ paddingBottom: '18px', borderBottom: '1px solid rgba(34,38,43,0.08)', marginBottom: '18px' }}>
-      <div className="mb-3 flex items-center justify-between gap-3">
-        <p className="text-xs font-semibold uppercase" style={{ letterSpacing: '0.13em', color: 'rgba(34,38,43,0.42)' }}>
-          Work Experience
-        </p>
-        <span className="text-xs font-semibold tabular-nums" style={{ color: '#22262B' }}>
-          &lt;= {value} yrs
-        </span>
+      <div className={`flex items-center justify-between ${open ? 'mb-3' : ''}`}>
+        <button
+          type="button"
+          onClick={() => setOpen((value) => !value)}
+          className="flex flex-1 items-center justify-between gap-3 text-left"
+        >
+          <span className="text-xs font-semibold uppercase" style={{ letterSpacing: '0.13em', color: 'rgba(34,38,43,0.42)' }}>
+            Work Experience
+          </span>
+          <svg
+            width="13"
+            height="13"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2.2}
+            className="transition-transform duration-150"
+            style={{ color: 'rgba(34,38,43,0.42)', transform: open ? 'rotate(180deg)' : 'rotate(0deg)' }}
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6 9l6 6 6-6" />
+          </svg>
+        </button>
+        {hasValue && (
+          <button
+            onClick={() => { onMinChange(''); onMaxChange('') }}
+            className="ml-3 text-[11px] font-medium"
+            style={{ color: '#C8923A' }}
+          >
+            Reset
+          </button>
+        )}
       </div>
-      <input
-        type="range"
-        min="0"
-        max={max}
-        step="1"
-        value={value}
-        onChange={(e) => onChange(Number(e.target.value))}
-        className="w-full accent-[#22262B]"
-      />
-      <div className="mt-1 flex justify-between text-xs" style={{ color: 'rgba(34,38,43,0.38)' }}>
-        <span>0 yrs</span>
-        <span>{max} yrs</span>
-      </div>
+
+      {open && (
+        <>
+          <div className="grid grid-cols-2 gap-2">
+            <label className="flex flex-col gap-1">
+              <span className="text-[11px] font-medium" style={{ color: 'rgba(34,38,43,0.55)' }}>Min years</span>
+              <input
+                type="number"
+                min="0"
+                max="40"
+                inputMode="numeric"
+                value={minValue}
+                onChange={(e) => onMinChange(e.target.value)}
+                placeholder="e.g. 2"
+                className="w-full rounded-lg px-3 py-2 text-xs outline-none"
+                style={{ background: '#fff', border: '1px solid rgba(34,38,43,0.12)', color: '#22262B' }}
+              />
+            </label>
+            <label className="flex flex-col gap-1">
+              <span className="text-[11px] font-medium" style={{ color: 'rgba(34,38,43,0.55)' }}>Max years</span>
+              <input
+                type="number"
+                min="0"
+                max="40"
+                inputMode="numeric"
+                value={maxValue}
+                onChange={(e) => onMaxChange(e.target.value)}
+                placeholder="e.g. 6"
+                className="w-full rounded-lg px-3 py-2 text-xs outline-none"
+                style={{ background: '#fff', border: '1px solid rgba(34,38,43,0.12)', color: '#22262B' }}
+              />
+            </label>
+          </div>
+          <p className="mt-2 text-[11px] leading-snug" style={{ color: 'rgba(34,38,43,0.42)' }}>
+            Filter roles by required years of experience.
+          </p>
+        </>
+      )}
     </div>
   )
 }
@@ -688,8 +844,6 @@ function RoleDetail({ role, onClose }: { role: Role; onClose: () => void }) {
 
               {/* CTA buttons */}
               <div className="pt-4">
-                <p className="text-xs text-center mb-3" style={{ color: 'rgba(34,38,43,0.30)' }}>Role · {role.id}</p>
-
                 <a
                   href="/candidates"
                   className="flex items-center justify-center gap-2 w-full py-2.5 rounded-full text-sm font-semibold transition-all duration-200 hover:brightness-110 mb-2"
@@ -728,15 +882,11 @@ export default function Roles() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
   const [salaryMin, setSalaryMin] = useState('')
   const [salaryMax, setSalaryMax] = useState('')
-  const maxExperience = useMemo(() => Math.max(1, ...directoryRoles.map((role) => maxExperienceYears(role.yoe))), [directoryRoles])
-  const [experienceMax, setExperienceMax] = useState(maxExperience)
+  const [experienceMin, setExperienceMin] = useState('')
+  const [experienceMax, setExperienceMax] = useState('')
   const sectionRef = useRef<HTMLDivElement>(null)
   const [page, setPage] = useState(1)
   const PAGE_SIZE = 10
-
-  useEffect(() => {
-    setExperienceMax(maxExperience)
-  }, [maxExperience])
 
   useEffect(() => {
     let cancelled = false
@@ -781,7 +931,8 @@ export default function Roles() {
     setSearch('')
     setSalaryMin('')
     setSalaryMax('')
-    setExperienceMax(maxExperience)
+    setExperienceMin('')
+    setExperienceMax('')
   }
 
   const chips = useMemo(() => {
@@ -791,10 +942,13 @@ export default function Roles() {
   }, [filters])
   const salaryMinValue = useMemo(() => salaryFromInput(salaryMin), [salaryMin])
   const salaryMaxValue = useMemo(() => salaryFromInput(salaryMax), [salaryMax])
+  const expMinValue = useMemo(() => expFromInput(experienceMin), [experienceMin])
+  const expMaxValue = useMemo(() => expFromInput(experienceMax), [experienceMax])
   const activeFilterCount = chips.length
     + (salaryMinValue != null ? 1 : 0)
     + (salaryMaxValue != null ? 1 : 0)
-    + (experienceMax < maxExperience ? 1 : 0)
+    + (expMinValue != null ? 1 : 0)
+    + (expMaxValue != null ? 1 : 0)
 
   const filtered = useMemo(() => {
     let r = directoryRoles
@@ -805,7 +959,7 @@ export default function Roles() {
     if (filters.companySize.length) r = r.filter((x) => x.companySize && filters.companySize.includes(x.companySize))
     if (filters.jobCategory.length) r = r.filter((x) => x.jobCategory && filters.jobCategory.includes(x.jobCategory))
     if (filters.employmentType.length) r = r.filter((x) => filters.employmentType.includes(x.employmentType))
-    if (experienceMax < maxExperience) r = r.filter((x) => maxExperienceYears(x.yoe) <= experienceMax)
+    if (expMinValue != null || expMaxValue != null) r = r.filter((x) => matchesExperienceRange(x, expMinValue, expMaxValue))
     if (filters.h1b.length) {
       r = r.filter((x) =>
         (filters.h1b.includes('Sponsored') && x.h1bSponsorship) ||
@@ -829,7 +983,7 @@ export default function Roles() {
     if (sort === 'salary_lo') return [...r].sort((a, b) => midUSD(a) - midUSD(b))
     if (sort === 'alpha') return [...r].sort((a, b) => a.title.localeCompare(b.title))
     return r
-  }, [directoryRoles, filters, search, sort, experienceMax, maxExperience, salaryMinValue, salaryMaxValue])
+  }, [directoryRoles, filters, search, sort, expMinValue, expMaxValue, salaryMinValue, salaryMaxValue])
 
   // Prevent scroll-to-footer when results shrink: if section scrolled past view, scroll back
   useEffect(() => {
@@ -844,12 +998,12 @@ export default function Roles() {
   // Reset to page 1 whenever filtered results change
   useEffect(() => {
     setPage(1)
-  }, [filtered.length, search, filters, sort, salaryMin, salaryMax, experienceMax])
+  }, [filtered.length, search, filters, sort, salaryMin, salaryMax, experienceMin, experienceMax])
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))
   const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
 
-  const hasFilters = chips.length > 0 || search.trim().length > 0 || salaryMinValue != null || salaryMaxValue != null || experienceMax < maxExperience
+  const hasFilters = chips.length > 0 || search.trim().length > 0 || salaryMinValue != null || salaryMaxValue != null || expMinValue != null || expMaxValue != null
 
   // Sidebar template (shared between desktop aside + mobile drawer)
   const SidebarContent = (
@@ -866,7 +1020,12 @@ export default function Roles() {
         onMinChange={setSalaryMin}
         onMaxChange={setSalaryMax}
       />
-      <ExperienceSliderFilter value={experienceMax} max={maxExperience} onChange={setExperienceMax} />
+      <ExperienceRangeFilter
+        minValue={experienceMin}
+        maxValue={experienceMax}
+        onMinChange={setExperienceMin}
+        onMaxChange={setExperienceMax}
+      />
       {filterGroups.map((g) => (
         <FilterGroup key={g.key} groupKey={g.key} label={g.label} options={g.options} selected={filters[g.key]} roles={directoryRoles} onToggle={toggleFilter} />
       ))}
@@ -969,13 +1128,25 @@ export default function Roles() {
                     </svg>
                   </button>
                 )}
-                {experienceMax < maxExperience && (
+                {expMinValue != null && (
                   <button
-                    onClick={() => setExperienceMax(maxExperience)}
+                    onClick={() => setExperienceMin('')}
                     className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-150 hover:opacity-80"
                     style={{ background: '#22262B', color: '#F7F4EF' }}
                   >
-                    Experience &lt;= {experienceMax} yrs
+                    Min exp {expMinValue} yrs
+                    <svg width="9" height="9" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.8}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                )}
+                {expMaxValue != null && (
+                  <button
+                    onClick={() => setExperienceMax('')}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-150 hover:opacity-80"
+                    style={{ background: '#22262B', color: '#F7F4EF' }}
+                  >
+                    Max exp {expMaxValue} yrs
                     <svg width="9" height="9" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.8}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                     </svg>

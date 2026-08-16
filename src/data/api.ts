@@ -11,20 +11,22 @@ export interface Company {
   activeRoleCount: number
 }
 
+const API_BASE = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '')
+
 export async function fetchRoles(params = '', init?: RequestInit): Promise<Role[]> {
-  const response = await fetch(`/api/roles${params}`, init)
+  const response = await fetch(`${API_BASE}/api/roles${params}`, init)
   if (!response.ok) throw new Error(`Roles request failed: ${response.status}`)
   return response.json()
 }
 
 export async function fetchRole(id: string): Promise<Role> {
-  const response = await fetch(`/api/roles/${encodeURIComponent(id)}`)
+  const response = await fetch(`${API_BASE}/api/roles/${encodeURIComponent(id)}`)
   if (!response.ok) throw new Error(`Role request failed: ${response.status}`)
   return response.json()
 }
 
 export async function fetchActiveCompanies(): Promise<Company[]> {
-  const response = await fetch('/api/companies')
+  const response = await fetch(`${API_BASE}/api/companies`)
   if (!response.ok) throw new Error(`Companies request failed: ${response.status}`)
   return response.json()
 }

@@ -383,7 +383,6 @@ export default function RoleDetailPage() {
                   <h1 className="text-3xl font-semibold leading-tight md:text-[2rem]" style={{ color: '#07152A', letterSpacing: '0' }}>
                     {role.title} at {role.company}
                   </h1>
-                  <span className="text-sm" style={{ color: '#8B93A3' }}>({role.id})</span>
                 </div>
                 <p className="mt-2 text-base font-medium" style={{ color: '#4A5059' }}>{fmtSalary(role)}</p>
                 {summary && <p className="mt-3 max-w-5xl text-base leading-7" style={{ color: '#26303B' }}>{summary}</p>}

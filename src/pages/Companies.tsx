@@ -21,13 +21,18 @@ export default function Companies() {
         payload[key] = value
       })
       
-      const sheetUrl = import.meta.env.VITE_GOOGLE_SHEETS_COMPANIES_URL
+      const sheetUrl = import.meta.env.VITE_GOOGLE_SHEETS_COMPANIES_URL || import.meta.env.VITE_GOOGLE_SHEETS_URL
       if (sheetUrl) {
-        await fetch(sheetUrl, { 
-          method: 'POST', 
-          body: JSON.stringify(payload),
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' }
-        })
+        try {
+          await fetch(sheetUrl, { 
+            method: 'POST', 
+            body: JSON.stringify(payload),
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            mode: 'no-cors',
+          })
+        } catch (fetchErr) {
+          console.warn('Companies submission notice:', fetchErr)
+        }
       }
       
       setIsSuccess(true)
@@ -35,8 +40,8 @@ export default function Companies() {
       const calendlyUrl = import.meta.env.VITE_CALENDLY_URL
       if (calendlyUrl) {
         setTimeout(() => {
-          window.location.href = calendlyUrl
-        }, 10000)
+          window.open(calendlyUrl, '_blank')
+        }, 1500)
       }
     } catch (error) {
       console.error(error)
@@ -312,19 +317,35 @@ export default function Companies() {
             }}
           >
             {isSuccess ? (
-              <div className="py-20 flex flex-col items-center justify-center text-center animate-fade-in">
+              <div className="py-16 flex flex-col items-center justify-center text-center animate-fade-in">
                 <div className="w-16 h-16 rounded-full flex items-center justify-center mb-6" style={{ background: 'rgba(30,77,58,0.2)', border: '1px solid rgba(30,77,58,0.5)' }}>
                   <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#7ecfa8" strokeWidth={2.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
-                <h3 className="font-serif font-light mb-4" style={{ fontSize: '2rem', color: '#22262B' }}>
+                <h3 className="font-serif font-light mb-3" style={{ fontSize: '2rem', color: '#22262B' }}>
                   Form Submitted Successfully!
                 </h3>
-                <p className="text-sm leading-relaxed max-w-md mx-auto mb-8" style={{ color: 'rgba(34,38,43,0.55)' }}>
-                  Thank you for reaching out. You will be redirected to our calendar to book a quick call in 10 seconds...
+                <p className="text-sm leading-relaxed max-w-md mx-auto mb-6" style={{ color: 'rgba(34,38,43,0.65)' }}>
+                  Thank you for reaching out. We are opening our calendar in a new tab so you can book an intro call with our team.
                 </p>
-                <div className="w-6 h-6 border-2 border-[rgba(34,38,43,0.2)] border-t-[#22262B] rounded-full animate-spin"></div>
+                {import.meta.env.VITE_CALENDLY_URL && (
+                  <a
+                    href={import.meta.env.VITE_CALENDLY_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-7 py-3 rounded-full text-sm font-semibold transition-all duration-200 hover:brightness-110"
+                    style={{
+                      background: 'linear-gradient(135deg, #C8923A 0%, #D4A052 50%, #C07828 100%)',
+                      color: '#1a0e04',
+                    }}
+                  >
+                    Open Calendar Booking
+                    <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                    </svg>
+                  </a>
+                )}
               </div>
             ) : (
               <form onSubmit={handleSubmit}>

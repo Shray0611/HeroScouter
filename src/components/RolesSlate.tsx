@@ -70,7 +70,7 @@ export default function RolesSlate() {
                 color: '#22262B',
               }}
             >
-              Open roles, right now.
+              Active roles, right now.
             </h2>
             <p className="mt-3 text-sm" style={{ color: '#7A8390' }}>
               Ten live opportunities from the companies in your directory.
@@ -207,7 +207,7 @@ export default function RolesSlate() {
               color: '#F7F4EF',
             }}
           >
-            Browse all open roles
+            Browse all active roles
           </a>
         </div>
 

@@ -101,7 +101,7 @@ export default function SiteFooter() {
               {[
                 { label: 'Blog', href: '/blog' },
                 { label: 'About', href: '#about' },
-                { label: 'Support: basecamp@heroscouter.com', href: 'mailto:basecamp@heroscouter.com' },
+                { label: 'Get in Touch : basecamp@heroscouter.com', href: 'mailto:basecamp@heroscouter.com' },
               ].map((r) => (
                 <li key={r.label}>
                   <a
