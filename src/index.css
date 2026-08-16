@@ -1,0 +1,180 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400;1,9..144,500&family=Inter:wght@300;400;500;600&display=swap');
+@import 'tailwindcss';
+
+@theme inline {
+  --font-serif: 'Fraunces', Georgia, serif;
+  --font-sans: 'Inter', system-ui, sans-serif;
+
+  /* ── Brand palette ── */
+  --color-paper:        #F7F4EF;   /* warm off-white ground */
+  --color-paper-dark:   #EDE9E1;   /* cards, subtle tint */
+  --color-ink:          #22262B;   /* warm near-black text */
+  --color-ink-mid:      #4A5059;   /* secondary text */
+  --color-ink-soft:     #7A8390;   /* muted text */
+  --color-green:        #1E4D3A;   /* deep green — Companies + primary */
+  --color-green-light:  #2A6B50;
+  --color-green-bg:     #EAF2EE;
+  --color-amber:        #D98A3D;   /* warm amber — Candidates + CTA */
+  --color-amber-light:  #E8A05C;
+  --color-amber-bg:     #FBF2E8;
+  --color-clay:         #C0603F;   /* terracotta — Recruiters */
+  --color-clay-light:   #D4785A;
+  --color-clay-bg:      #FAF0EB;
+  --color-rule:         rgba(34,38,43,0.10);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background-color: #F7F4EF;
+  color: #22262B;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.font-serif { font-family: 'Fraunces', Georgia, serif; }
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(34,38,43,0.15); border-radius: 3px; }
+
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* Role detail HTML content styling */
+.hs-prose h1, .hs-prose h2, .hs-prose h3, .hs-prose h4 {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 500;
+  color: #22262B;
+  margin-top: 1.35rem;
+  margin-bottom: 0.6rem;
+  line-height: 1.3;
+}
+.hs-prose h1:first-child, .hs-prose h2:first-child, .hs-prose h3:first-child, .hs-prose h4:first-child {
+  margin-top: 0;
+}
+.hs-prose h1 { font-size: 1.15rem; }
+.hs-prose h2 { font-size: 1.05rem; }
+.hs-prose h3 { font-size: 0.975rem; }
+.hs-prose h4 { font-size: 0.9rem; }
+.hs-prose p {
+  color: #4A5059;
+  line-height: 1.72;
+  margin-bottom: 0.7rem;
+  font-size: 0.88rem;
+}
+.hs-prose ul, .hs-prose ol {
+  margin-top: 0.35rem;
+  margin-bottom: 1rem;
+  padding-left: 1.25rem;
+}
+.hs-prose ul {
+  list-style-type: disc;
+}
+.hs-prose ol {
+  list-style-type: decimal;
+}
+.hs-prose li {
+  display: list-item;
+  color: #4A5059;
+  line-height: 1.65;
+  font-size: 0.88rem;
+  margin-bottom: 0.42rem;
+  padding-left: 0.2rem;
+}
+.hs-prose li::marker {
+  color: #C8923A;
+  font-size: 0.78em;
+}
+.hs-prose li p {
+  display: inline;
+  margin: 0;
+  font-size: inherit;
+  line-height: inherit;
+}
+.hs-prose ul + ul,
+.hs-prose ol + ol {
+  margin-top: -0.55rem;
+}
+.hs-prose strong { color: #22262B; font-weight: 600; }
+.hs-prose a { color: #C8923A; text-decoration: underline; text-underline-offset: 2px; }
+.hs-prose a:hover { color: #A06C20; }
+
+.role-detail-prose {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 1rem;
+  line-height: 1.75;
+  color: #26303B;
+}
+
+.role-detail-page {
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+.role-detail-prose h1,
+.role-detail-prose h2,
+.role-detail-prose h3,
+.role-detail-prose h4 {
+  font-family: 'Fraunces', Georgia, serif;
+  font-style: italic;
+  font-weight: 500;
+  color: #07152A;
+  letter-spacing: 0;
+  line-height: 1.25;
+  margin-top: 1.35rem;
+  margin-bottom: 0.65rem;
+}
+
+.role-detail-prose h1 { font-size: 1.5rem; }
+.role-detail-prose h2 { font-size: 1.375rem; }
+.role-detail-prose h3 { font-size: 1.125rem; }
+.role-detail-prose h4 { font-size: 1rem; }
+
+.role-detail-prose p {
+  color: #26303B;
+  margin: 0 0 1rem;
+  line-height: 1.75;
+}
+
+.role-detail-prose ul,
+.role-detail-prose ol {
+  margin: 0.35rem 0 1.1rem 1.35rem;
+}
+
+.role-detail-prose li {
+  color: #26303B;
+  padding-left: 0.3rem;
+  margin: 0.5rem 0;
+  line-height: 1.7;
+}
+
+@media print {
+  @page {
+    margin: 1.5cm;
+  }
+  body {
+    background-color: white !important;
+    color: black !important;
+  }
+  nav, footer, .print\:hidden {
+    display: none !important;
+  }
+  .role-detail-page {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+  .role-detail-page article {
+    max-width: 100% !important;
+  }
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  section {
+    break-inside: avoid;
+  }
+}
