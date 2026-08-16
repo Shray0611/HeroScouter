@@ -2,7 +2,7 @@ import { useState, useMemo, useRef, useEffect } from 'react'
 import SiteNav from '../components/SiteNav'
 import SiteFooter from '../components/SiteFooter'
 import { roles as fallbackRoles, Role } from '../data/roles'
-import { fetchRoles } from '../data/api'
+import { fetchActiveRoleCount, fetchRoles } from '../data/api'
 import rolesBg from '../imports/roles_data.jpg'
 import logoFallback from '../imports/image-5.png'
 
@@ -27,7 +27,7 @@ const EMPTY: Filters = {
 type FilterKey = keyof Filters
 
 const ACTIVE_ROLES_CACHE_KEY = 'heroscouter.activeRoles.v1'
-const ACTIVE_ROLES_FETCH_TIMEOUT = 2500
+const ACTIVE_ROLES_FETCH_TIMEOUT = 10000
 
 function activeFallbackRoles() {
   return fallbackRoles.filter((role) => role.status === 'Active')
@@ -71,7 +71,7 @@ function numericRangeValue(value: string) {
 
 function salaryFromInput(value: string) {
   const n = numericRangeValue(value)
-  if (!Number.isFinite(n) || n <= 0) return null
+  if (n == null || n <= 0) return null
   return n < 1000 ? n * 1000 : n
 }
 
@@ -884,6 +884,7 @@ export default function Roles() {
   const [salaryMax, setSalaryMax] = useState('')
   const [experienceMin, setExperienceMin] = useState('')
   const [experienceMax, setExperienceMax] = useState('')
+  const [activeCount, setActiveCount] = useState(() => activeFallbackRoles().length)
   const sectionRef = useRef<HTMLDivElement>(null)
   const [page, setPage] = useState(1)
   const PAGE_SIZE = 10
@@ -897,6 +898,7 @@ export default function Roles() {
       .then((items) => {
         if (!cancelled && items.length) {
           setDirectoryRoles(items)
+          setActiveCount(items.length)
           writeCachedActiveRoles(items)
         }
       })
@@ -912,8 +914,28 @@ export default function Roles() {
     }
   }, [])
 
+  useEffect(() => {
+    let cancelled = false
+    const controller = new AbortController()
+    const timeout = window.setTimeout(() => controller.abort(), ACTIVE_ROLES_FETCH_TIMEOUT)
+
+    fetchActiveRoleCount({ signal: controller.signal })
+      .then((count) => {
+        if (!cancelled) setActiveCount(count)
+      })
+      .catch(() => {
+        if (!cancelled) setActiveCount((count) => count || activeFallbackRoles().length)
+      })
+      .finally(() => window.clearTimeout(timeout))
+
+    return () => {
+      cancelled = true
+      controller.abort()
+      window.clearTimeout(timeout)
+    }
+  }, [])
+
   const filterGroups = useMemo(() => getFilterGroups(directoryRoles), [directoryRoles])
-  const activeCount = useMemo(() => directoryRoles.filter((r) => r.status === 'Active').length, [directoryRoles])
 
   function toggleFilter(key: FilterKey, value: string) {
     setFilters((prev) => ({

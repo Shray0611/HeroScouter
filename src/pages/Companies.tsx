@@ -3,6 +3,7 @@ import SiteNav from '../components/SiteNav'
 import LogoTrack from '../components/LogoTrack'
 import SiteFooter from '../components/SiteFooter'
 import { useState } from 'react'
+import { submitLead } from '../data/api'
 
 export default function Companies() {
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -21,19 +22,7 @@ export default function Companies() {
         payload[key] = value
       })
       
-      const sheetUrl = import.meta.env.VITE_GOOGLE_SHEETS_COMPANIES_URL || import.meta.env.VITE_GOOGLE_SHEETS_URL
-      if (sheetUrl) {
-        try {
-          await fetch(sheetUrl, { 
-            method: 'POST', 
-            body: JSON.stringify(payload),
-            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            mode: 'no-cors',
-          })
-        } catch (fetchErr) {
-          console.warn('Companies submission notice:', fetchErr)
-        }
-      }
+      await submitLead('companies', payload)
       
       setIsSuccess(true)
       

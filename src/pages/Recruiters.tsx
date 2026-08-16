@@ -3,6 +3,7 @@ import LogoTrack from "../components/LogoTrack";
 import SiteFooter from "../components/SiteFooter";
 import SiteNav from "../components/SiteNav";
 import { useState } from "react";
+import { submitLead } from "../data/api";
 
 const benefits = [
   {
@@ -99,19 +100,7 @@ export default function Recruiters() {
       const payload: Record<string, any> = {}
       formData.forEach((value, key) => { payload[key] = value })
       
-      const sheetUrl = import.meta.env.VITE_GOOGLE_SHEETS_RECRUITERS_URL || import.meta.env.VITE_GOOGLE_SHEETS_URL
-      if (sheetUrl) {
-        try {
-          await fetch(sheetUrl, { 
-            method: 'POST', 
-            body: JSON.stringify(payload), 
-            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            mode: 'no-cors',
-          })
-        } catch (fetchErr) {
-          console.warn('Recruiters submission notice:', fetchErr)
-        }
-      }
+      await submitLead('recruiters', payload)
       setIsSuccessApply(true)
       const calendlyUrl = import.meta.env.VITE_CALENDLY_URL
       if (calendlyUrl) {

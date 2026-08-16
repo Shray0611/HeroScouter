@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { submitLead } from '../data/api'
 
 export interface ApplicationFormProps {
   jobId?: string;
@@ -52,23 +53,7 @@ export default function ApplicationForm({ jobId, roleTitle, onSuccess, title = "
         payload.resumeMimeType = resumeFile.type
         payload.resumeData = await toBase64(resumeFile)
       }
-      // If this is an application for a specific job, use the JD sheets URL (if provided)
-      const sheetUrl = jobId 
-        ? (import.meta.env.VITE_GOOGLE_SHEETS_JD_URL || import.meta.env.VITE_GOOGLE_SHEETS_URL)
-        : import.meta.env.VITE_GOOGLE_SHEETS_URL
-
-      if (sheetUrl) {
-        try {
-          await fetch(sheetUrl, { 
-            method: 'POST', 
-            body: JSON.stringify(payload),
-            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            mode: 'no-cors',
-          })
-        } catch (fetchErr) {
-          console.warn('Submission notice:', fetchErr)
-        }
-      }
+      await submitLead('candidates', payload)
       
       setIsSuccess(true)
       if (onSuccess) {

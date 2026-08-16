@@ -19,6 +19,13 @@ export async function fetchRoles(params = '', init?: RequestInit): Promise<Role[
   return response.json()
 }
 
+export async function fetchActiveRoleCount(init?: RequestInit): Promise<number> {
+  const response = await fetch(`${API_BASE}/api/roles/count?status=active`, init)
+  if (!response.ok) throw new Error(`Role count request failed: ${response.status}`)
+  const data = await response.json() as { count?: number }
+  return typeof data.count === 'number' ? data.count : 0
+}
+
 export async function fetchRole(id: string): Promise<Role> {
   const response = await fetch(`${API_BASE}/api/roles/${encodeURIComponent(id)}`)
   if (!response.ok) throw new Error(`Role request failed: ${response.status}`)
@@ -29,6 +36,21 @@ export async function fetchActiveCompanies(): Promise<Company[]> {
   const response = await fetch(`${API_BASE}/api/companies`)
   if (!response.ok) throw new Error(`Companies request failed: ${response.status}`)
   return response.json()
+}
+
+export async function submitLead(kind: 'candidates' | 'companies' | 'recruiters', payload: Record<string, unknown>) {
+  const response = await fetch(`${API_BASE}/api/submissions`, {
+    method: 'POST',
+    body: JSON.stringify({ kind, payload }),
+    headers: { 'Content-Type': 'application/json' },
+  })
+
+  if (!response.ok) {
+    const data = await response.json().catch(() => null) as { error?: string } | null
+    throw new Error(data?.error || `Submission failed: ${response.status}`)
+  }
+
+  return response.json() as Promise<{ ok: boolean }>
 }
 
 export function fallbackActiveRoles(limit?: number) {

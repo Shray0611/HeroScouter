@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router'
 import logoImage from '@/imports/Screenshot_2026-08-10_192639-removebg-preview.png'
 import { roles } from '@/data/roles'
-import { fetchRoles } from '@/data/api'
+import { fetchActiveRoleCount } from '@/data/api'
 
 interface SiteNavProps {
   cta?: { label: string; href: string }
@@ -10,22 +10,10 @@ interface SiteNavProps {
   variant?: 'absolute' | 'fixed'
 }
 
-const ACTIVE_ROLES_CACHE_KEY = 'heroscouter.activeRoles.v1'
-const LIVE_COUNT_FETCH_TIMEOUT = 1800
+const LIVE_COUNT_FETCH_TIMEOUT = 10000
 
 function fallbackLiveCount() {
   return roles.filter((r) => r.status === 'Active').length
-}
-
-function cachedLiveCount() {
-  try {
-    const cached = window.sessionStorage.getItem(ACTIVE_ROLES_CACHE_KEY)
-    if (!cached) return null
-    const parsed = JSON.parse(cached)
-    return Array.isArray(parsed) && parsed.length ? parsed.length : null
-  } catch {
-    return null
-  }
 }
 
 export default function SiteNav({
@@ -54,26 +42,19 @@ export default function SiteNav({
     return () => { document.body.style.overflow = '' }
   }, [menuOpen])
 
-  const [liveCount, setLiveCount] = useState(() => cachedLiveCount() ?? fallbackLiveCount())
+  const [liveCount, setLiveCount] = useState(() => fallbackLiveCount())
 
   useEffect(() => {
     let cancelled = false
     const controller = new AbortController()
     const timeout = window.setTimeout(() => controller.abort(), LIVE_COUNT_FETCH_TIMEOUT)
 
-    fetchRoles('?status=active', { signal: controller.signal })
-      .then((items) => {
-        if (!cancelled && items.length) {
-          setLiveCount(items.length)
-          try {
-            window.sessionStorage.setItem(ACTIVE_ROLES_CACHE_KEY, JSON.stringify(items))
-          } catch {
-            // The count still updates even when session storage is unavailable.
-          }
-        }
+    fetchActiveRoleCount({ signal: controller.signal })
+      .then((count) => {
+        if (!cancelled) setLiveCount(count)
       })
       .catch(() => {
-        if (!cancelled) setLiveCount(cachedLiveCount() ?? fallbackLiveCount())
+        if (!cancelled) setLiveCount(fallbackLiveCount())
       })
       .finally(() => window.clearTimeout(timeout))
 
