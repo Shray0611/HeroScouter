@@ -3,6 +3,7 @@ import LogoTrack from "../components/LogoTrack";
 import SiteFooter from "../components/SiteFooter";
 import SiteNav from "../components/SiteNav";
 import { useState } from "react";
+import { calendlyUrl, openCalendly } from "../data/calendly";
 import { submitLead } from "../data/api";
 
 const benefits = [
@@ -102,12 +103,7 @@ export default function Recruiters() {
       
       await submitLead('recruiters', payload)
       setIsSuccessApply(true)
-      const calendlyUrl = import.meta.env.VITE_CALENDLY_URL
-      if (calendlyUrl) {
-        setTimeout(() => {
-          window.open(calendlyUrl, '_blank')
-        }, 1500)
-      }
+      setTimeout(openCalendly, 500)
     } catch (error) {
       console.error(error)
       alert('An error occurred while submitting.')
@@ -395,23 +391,21 @@ export default function Recruiters() {
                 <p className="text-sm leading-relaxed max-w-md mx-auto mb-6" style={{ color: 'rgba(34,38,43,0.65)' }}>
                   Thank you for applying. We are opening our calendar in a new tab so you can choose an onboarding slot.
                 </p>
-                {import.meta.env.VITE_CALENDLY_URL && (
-                  <a
-                    href={import.meta.env.VITE_CALENDLY_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-7 py-3 rounded-full text-sm font-semibold transition-all duration-200 hover:brightness-110"
-                    style={{
-                      background: 'linear-gradient(135deg, #C8923A 0%, #D4A052 50%, #C07828 100%)',
-                      color: '#1a0e04',
-                    }}
-                  >
-                    Open Calendar Booking
-                    <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
-                    </svg>
-                  </a>
-                )}
+                <a
+                  href={calendlyUrl()}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-7 py-3 rounded-full text-sm font-semibold transition-all duration-200 hover:brightness-110"
+                  style={{
+                    background: 'linear-gradient(135deg, #C8923A 0%, #D4A052 50%, #C07828 100%)',
+                    color: '#1a0e04',
+                  }}
+                >
+                  Open Calendar Booking
+                  <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                  </svg>
+                </a>
               </div>
             ) : (
               <form onSubmit={handleApplySubmit}>
