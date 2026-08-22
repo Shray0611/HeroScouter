@@ -2,9 +2,9 @@ export default function SiteFooter() {
   return (
     <footer style={{ background: '#1E4D3A' }}>
       <div className="max-w-6xl mx-auto px-6 md:px-16 py-12 md:py-20">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-8 mb-12 md:mb-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 md:gap-8 mb-12 md:mb-16">
           {/* Brand */}
-          <div className="col-span-2 md:col-span-2">
+          <div className="sm:col-span-2 md:col-span-2 flex flex-col items-center sm:items-start text-center sm:text-left">
             <div
               className="font-serif font-medium text-xl mb-4"
               style={{ color: '#F7F4EF', letterSpacing: '-0.02em' }}
@@ -18,7 +18,7 @@ export default function SiteFooter() {
               The right people, matched properly.
             </p>
             {/* Socials */}
-            <div className="flex gap-3">
+            <div className="flex gap-3 justify-center sm:justify-start">
               {[
                 {
                   label: 'LinkedIn',
@@ -61,7 +61,7 @@ export default function SiteFooter() {
           </div>
 
           {/* For you */}
-          <div>
+          <div className="flex flex-col items-center sm:items-start text-center sm:text-left">
             <p
               className="text-xs font-semibold tracking-widest uppercase mb-5"
               style={{ color: 'rgba(247,244,239,0.38)', letterSpacing: '0.14em' }}
@@ -90,7 +90,7 @@ export default function SiteFooter() {
           </div>
 
           {/* Company */}
-          <div>
+          <div className="flex flex-col items-center sm:items-start text-center sm:text-left">
             <p
               className="text-xs font-semibold tracking-widest uppercase mb-5"
               style={{ color: 'rgba(247,244,239,0.38)', letterSpacing: '0.14em' }}
@@ -101,7 +101,6 @@ export default function SiteFooter() {
               {[
                 { label: 'Blog', href: '/blog' },
                 { label: 'About', href: '#about' },
-                { label: 'Get in Touch : basecamp@heroscouter.com', href: 'mailto:basecamp@heroscouter.com' },
               ].map((r) => (
                 <li key={r.label}>
                   <a
@@ -115,13 +114,31 @@ export default function SiteFooter() {
                   </a>
                 </li>
               ))}
+              {/* Email split into label + address so it wraps cleanly */}
+              <li>
+                <span
+                  className="text-sm block"
+                  style={{ color: 'rgba(247,244,239,0.60)' }}
+                >
+                  Get in Touch
+                </span>
+                <a
+                  href="mailto:basecamp@heroscouter.com"
+                  className="text-sm transition-colors duration-200 break-all"
+                  style={{ color: 'rgba(247,244,239,0.60)' }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = '#F7F4EF')}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(247,244,239,0.60)')}
+                >
+                  basecamp@heroscouter.com
+                </a>
+              </li>
             </ul>
           </div>
         </div>
 
         {/* Bottom bar */}
         <div
-          className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pt-8"
+          className="flex flex-col md:flex-row items-center md:items-center justify-between gap-4 pt-8 text-center md:text-left"
           style={{ borderTop: '1px solid rgba(247,244,239,0.12)' }}
         >
           <p className="text-xs" style={{ color: 'rgba(247,244,239,0.36)' }}>

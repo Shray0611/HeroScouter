@@ -45,6 +45,23 @@ body {
   to   { transform: translateX(-50%); }
 }
 
+/* Hero section — mobile image focus override */
+@media (max-width: 767px) {
+  .hero-image {
+    object-position: 62% 35% !important;
+  }
+  /* Lighten the left vignette on mobile so the subject stays visible */
+  .hero-vignette {
+    background: linear-gradient(
+      180deg,
+      rgba(10, 25, 50, 0.60) 0%,
+      rgba(10, 25, 50, 0.45) 30%,
+      rgba(10, 25, 50, 0.20) 55%,
+      transparent 80%
+    ) !important;
+  }
+}
+
 /* Role detail HTML content styling */
 .hs-prose h1, .hs-prose h2, .hs-prose h3, .hs-prose h4 {
   font-family: 'Fraunces', Georgia, serif;
