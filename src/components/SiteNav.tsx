@@ -191,6 +191,14 @@ export default function SiteNav({
         <div className="flex md:hidden items-center gap-3">
           <a
             href={cta.href}
+            onClick={(e) => {
+              const href = cta.href
+              if (href.startsWith('#')) {
+                e.preventDefault()
+                const el = document.getElementById(href.slice(1))
+                if (el) el.scrollIntoView({ behavior: 'smooth' })
+              }
+            }}
             className="inline-flex items-center justify-center px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap text-center"
             style={{
               background: 'linear-gradient(135deg, #C8923A 0%, #D4A052 50%, #C07828 100%)',
@@ -287,7 +295,17 @@ export default function SiteNav({
           <div className="mt-auto pt-8 border-t border-white border-opacity-10">
             <a
               href={cta.href}
-              onClick={() => setMenuOpen(false)}
+              onClick={(e) => {
+                setMenuOpen(false)
+                const href = cta.href
+                if (href.startsWith('#')) {
+                  e.preventDefault()
+                  setTimeout(() => {
+                    const el = document.getElementById(href.slice(1))
+                    if (el) el.scrollIntoView({ behavior: 'smooth' })
+                  }, 300)
+                }
+              }}
               className="flex items-center justify-center w-full py-4 rounded-2xl text-base font-semibold transition-all duration-200"
               style={{
                 background: 'linear-gradient(135deg, #C8923A 0%, #D4A052 50%, #C07828 100%)',

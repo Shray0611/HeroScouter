@@ -3,7 +3,7 @@ import SiteNav from './SiteNav'
 
 export default function HeroSection() {
   return (
-    <section className="relative min-h-screen flex flex-col justify-end overflow-hidden">
+    <section className="hero-section relative min-h-screen flex flex-col justify-center md:justify-end overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0" style={{ background: '#4a7fa5' }}>
         <img
@@ -36,13 +36,13 @@ export default function HeroSection() {
       </div>
 
       <SiteNav
-        cta={{ label: 'Get started', href: '/' }}
+        cta={{ label: 'Get started', href: '#how-it-works' }}
         activeLink="Home"
         variant="fixed"
       />
 
       {/* Content — centered on mobile, left-aligned on md+ */}
-      <div className="relative z-10 w-full px-6 sm:px-8 md:px-10 pb-32 sm:pb-36 md:pb-32 text-center md:text-left md:max-w-3xl md:ml-[clamp(1rem,6vw,7rem)]">
+      <div className="relative z-10 w-full px-6 sm:px-8 md:px-10 pt-20 pb-10 md:pt-0 md:pb-32 text-center md:text-left md:max-w-3xl md:ml-[clamp(1rem,6vw,7rem)]">
         <h1
           className="font-serif font-light mb-5"
           style={{
@@ -71,7 +71,11 @@ export default function HeroSection() {
 
         <div className="flex flex-col sm:flex-row flex-wrap gap-3 items-center md:items-start justify-center md:justify-start">
           <a
-            href="#companies"
+            href="#how-it-works"
+            onClick={(e) => {
+              e.preventDefault()
+              document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })
+            }}
             className="flex items-center justify-center w-full sm:w-auto gap-2 px-7 py-3.5 rounded-full text-sm font-semibold transition-all duration-200 hover:brightness-110 hover:scale-[1.03]"
             style={{
               background: 'linear-gradient(135deg, #C8923A 0%, #D4A052 50%, #C07828 100%)',

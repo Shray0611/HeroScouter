@@ -47,6 +47,13 @@ body {
 
 /* Hero section — mobile image focus override */
 @media (max-width: 767px) {
+  /* Use dvh (dynamic viewport height) so iOS Safari's nav bar is accounted for.
+     Falls back to 100vh on browsers that don't support dvh. */
+  .hero-section {
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+
   .hero-image {
     object-position: 62% 35% !important;
   }

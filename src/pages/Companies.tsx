@@ -44,7 +44,7 @@ export default function Companies() {
       />
 
       {/* ── HERO ── */}
-      <section className="relative min-h-screen flex flex-col justify-end overflow-hidden">
+      <section className="hero-section relative min-h-screen flex flex-col justify-center md:justify-end overflow-hidden">
         <div className="absolute inset-0" style={{ background: '#2a1e0e' }}>
           <img
             src={companiesBg}
@@ -82,7 +82,7 @@ export default function Companies() {
         </div>
 
         {/* Hero content — centered on mobile, left-aligned on md+ */}
-        <div className="relative z-10 w-full px-6 sm:px-8 md:px-10 pb-32 sm:pb-36 md:pb-28 text-center md:text-left md:max-w-3xl md:ml-[clamp(1rem,6vw,7rem)]">
+        <div className="relative z-10 w-full px-6 sm:px-8 md:px-10 pt-20 pb-10 md:pt-0 md:pb-28 text-center md:text-left md:max-w-3xl md:ml-[clamp(1rem,6vw,7rem)]">
           <p
             className="text-xs font-semibold uppercase tracking-widest mb-5"
             style={{ color: 'rgba(217,160,61,0.9)', letterSpacing: '0.22em' }}
