@@ -42,7 +42,7 @@ export default function HeroSection() {
       />
 
       {/* Content — centered on mobile, left-aligned on md+ */}
-      <div className="relative z-10 w-full px-6 sm:px-8 md:px-10 pb-48 sm:pb-44 md:pb-32 text-center md:text-left md:max-w-3xl md:ml-[clamp(1rem,6vw,7rem)]">
+      <div className="relative z-10 w-full px-6 sm:px-8 md:px-10 pb-32 sm:pb-36 md:pb-32 text-center md:text-left md:max-w-3xl md:ml-[clamp(1rem,6vw,7rem)]">
         <h1
           className="font-serif font-light mb-5"
           style={{
@@ -69,10 +69,10 @@ export default function HeroSection() {
           help those people find work that fits.
         </p>
 
-        <div className="flex flex-wrap gap-3 justify-center md:justify-start">
+        <div className="flex flex-col sm:flex-row flex-wrap gap-3 items-center md:items-start justify-center md:justify-start">
           <a
             href="#companies"
-            className="inline-flex items-center gap-2 px-6 sm:px-7 py-3 sm:py-3.5 rounded-full text-sm font-semibold transition-all duration-200 hover:brightness-110 hover:scale-[1.03]"
+            className="flex items-center justify-center w-full sm:w-auto gap-2 px-7 py-3.5 rounded-full text-sm font-semibold transition-all duration-200 hover:brightness-110 hover:scale-[1.03]"
             style={{
               background: 'linear-gradient(135deg, #C8923A 0%, #D4A052 50%, #C07828 100%)',
               color: '#1a0e04',
@@ -82,7 +82,7 @@ export default function HeroSection() {
           </a>
           <a
             href="#roles"
-            className="inline-flex items-center gap-2 px-6 sm:px-7 py-3 sm:py-3.5 rounded-full text-sm font-medium transition-all duration-200 hover:scale-[1.03]"
+            className="flex items-center justify-center w-full sm:w-auto gap-2 px-7 py-3.5 rounded-full text-sm font-medium transition-all duration-200 hover:scale-[1.03]"
             style={{
               background: 'rgba(247,244,239,0.10)',
               border: '1px solid rgba(247,244,239,0.28)',

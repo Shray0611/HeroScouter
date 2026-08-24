@@ -59,7 +59,7 @@ export default function Companies() {
           />
           {/* Left vignette */}
           <div
-            className="absolute inset-0"
+            className="absolute inset-0 companies-hero-vignette"
             style={{
               background:
                 'linear-gradient(to right, rgba(20,14,6,0.96) 0%, rgba(20,14,6,0.88) 14%, rgba(20,14,6,0.68) 30%, rgba(20,14,6,0.36) 50%, rgba(20,14,6,0.10) 66%, transparent 80%)',
@@ -81,11 +81,8 @@ export default function Companies() {
           />
         </div>
 
-        {/* Hero content */}
-        <div
-          className="relative z-10 px-8 md:px-10 pb-20 md:pb-28 max-w-3xl"
-          style={{ marginLeft: 'clamp(1rem, 6vw, 7rem)' }}
-        >
+        {/* Hero content — centered on mobile, left-aligned on md+ */}
+        <div className="relative z-10 w-full px-6 sm:px-8 md:px-10 pb-32 sm:pb-36 md:pb-28 text-center md:text-left md:max-w-3xl md:ml-[clamp(1rem,6vw,7rem)]">
           <p
             className="text-xs font-semibold uppercase tracking-widest mb-5"
             style={{ color: 'rgba(217,160,61,0.9)', letterSpacing: '0.22em' }}
@@ -95,9 +92,9 @@ export default function Companies() {
           <h1
             className="font-serif font-light mb-6"
             style={{
-              fontSize: 'clamp(2.8rem, 4.2vw, 5rem)',
+              fontSize: 'clamp(1.85rem, 4.2vw, 5rem)',
               letterSpacing: '-0.025em',
-              lineHeight: 1.07,
+              lineHeight: 1.1,
               color: '#F7F4EF',
               textShadow: '0 2px 24px rgba(0,0,0,0.35)',
             }}
@@ -109,17 +106,17 @@ export default function Companies() {
             network working for you.
           </h1>
           <p
-            className="text-base md:text-lg font-light leading-relaxed mb-10"
+            className="text-sm sm:text-base md:text-lg font-light leading-relaxed mb-8 mx-auto md:mx-0"
             style={{ color: 'rgba(247,244,239,0.80)', maxWidth: '34rem' }}
           >
             You don't manage recruiters. You don't run a sourcing operation.
             You tell us what you need, and we deploy our network to find the
             candidates who actually fit.
           </p>
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-col sm:flex-row flex-wrap gap-3 items-center md:items-start justify-center md:justify-start">
             <a
               href="#work"
-              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-sm font-semibold transition-all duration-200 hover:brightness-110 hover:scale-[1.03]"
+              className="flex items-center justify-center w-full sm:w-auto gap-2 px-7 py-3.5 rounded-full text-sm font-semibold transition-all duration-200 hover:brightness-110 hover:scale-[1.03]"
               style={{
                 background: 'linear-gradient(135deg, #C8923A 0%, #D4A052 50%, #C07828 100%)',
                 color: '#1a0e04',
@@ -129,7 +126,7 @@ export default function Companies() {
             </a>
             <a
               href="mailto:basecamp@heroscouter.com"
-              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-sm font-medium transition-all duration-200 hover:scale-[1.03]"
+              className="flex items-center justify-center w-full sm:w-auto gap-2 px-7 py-3.5 rounded-full text-sm font-medium transition-all duration-200 hover:scale-[1.03]"
               style={{
                 background: 'rgba(247,244,239,0.10)',
                 border: '1px solid rgba(247,244,239,0.28)',
@@ -273,7 +270,7 @@ export default function Companies() {
       </section>
 
       {/* ── COMPANIES FORM ── */}
-      <section id="work" className="pt-12 md:pt-16 pb-24 md:pb-32 px-8 md:px-16" style={{ background: '#EDE9E1' }}>
+      <section id="work" className="pt-12 md:pt-16 pb-24 md:pb-32 px-4 sm:px-8 md:px-16" style={{ background: '#EDE9E1' }}>
         <div className="max-w-3xl mx-auto">
           <div className="mb-12 text-center">
             <h2
@@ -293,7 +290,7 @@ export default function Companies() {
 
           {/* Form Container */}
           <div
-            className="p-8 md:p-10"
+            className="p-5 sm:p-8 md:p-10"
             style={{
               background: '#F7F4EF',
               border: '1px solid rgba(34,38,43,0.10)',
@@ -318,7 +315,7 @@ export default function Companies() {
                   href={calendlyUrl()}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-7 py-3 rounded-full text-sm font-semibold transition-all duration-200 hover:brightness-110"
+                  className="inline-flex items-center justify-center gap-2 px-7 py-3 rounded-full text-sm font-semibold transition-all duration-200 hover:brightness-110"
                   style={{
                     background: 'linear-gradient(135deg, #C8923A 0%, #D4A052 50%, #C07828 100%)',
                     color: '#1a0e04',
@@ -382,10 +379,10 @@ export default function Companies() {
                       <label className="block text-sm font-medium mb-2" style={{ color: '#4A5059' }}>
                         Phone Number <span style={{ color: 'rgba(34,38,43,0.45)', fontWeight: 'normal' }}>(optional)</span>
                       </label>
-                      <div className="flex gap-4">
+                      <div className="flex flex-col sm:flex-row gap-3">
                         <select
                           name="phoneCode"
-                          className="w-[120px] border border-[rgba(34,38,43,0.15)] rounded-xl px-4 py-3 text-[#22262B] focus:outline-none focus:border-[rgba(34,38,43,0.4)] transition-colors"
+                          className="w-full sm:w-[120px] border border-[rgba(34,38,43,0.15)] rounded-xl px-4 py-3 text-[#22262B] focus:outline-none focus:border-[rgba(34,38,43,0.4)] transition-colors"
                           style={{ background: '#F7F4EF', appearance: 'none' }}
                         >
                           <option>IN +91</option>
@@ -453,11 +450,11 @@ export default function Companies() {
                 </div>
 
                 {/* Submit Button */}
-                <div className="mt-8 flex justify-end">
+                <div className="mt-8">
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full px-8 py-4 rounded-xl text-sm font-bold transition-all duration-200 hover:brightness-110 hover:scale-[1.01] disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full px-8 py-4 rounded-xl text-sm font-bold text-center transition-all duration-200 hover:brightness-110 hover:scale-[1.01] disabled:opacity-50 disabled:cursor-not-allowed"
                     style={{ background: '#1E4D3A', color: '#F7F4EF' }}
                   >
                     {isSubmitting ? 'Sending...' : 'Send Enquiry'}

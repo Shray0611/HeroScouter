@@ -60,6 +60,43 @@ body {
       transparent 80%
     ) !important;
   }
+
+  /* Candidates page — center the horse+man on mobile */
+  .candidates-hero-image {
+    object-position: 72% 40% !important;
+    transform: none !important;
+  }
+  .candidates-hero-vignette {
+    background: linear-gradient(
+      180deg,
+      rgba(10, 18, 36, 0.75) 0%,
+      rgba(10, 18, 36, 0.50) 30%,
+      rgba(10, 18, 36, 0.22) 55%,
+      transparent 80%
+    ) !important;
+  }
+
+  /* Companies page — lighten left vignette on mobile */
+  .companies-hero-vignette {
+    background: linear-gradient(
+      180deg,
+      rgba(20, 14, 6, 0.80) 0%,
+      rgba(20, 14, 6, 0.55) 30%,
+      rgba(20, 14, 6, 0.22) 55%,
+      transparent 80%
+    ) !important;
+  }
+
+  /* Recruiters page — lighten left vignette on mobile */
+  .recruiters-hero-vignette {
+    background: linear-gradient(
+      180deg,
+      rgba(7, 13, 27, 0.80) 0%,
+      rgba(7, 13, 27, 0.55) 30%,
+      rgba(7, 13, 27, 0.22) 55%,
+      transparent 80%
+    ) !important;
+  }
 }
 
 /* Role detail HTML content styling */

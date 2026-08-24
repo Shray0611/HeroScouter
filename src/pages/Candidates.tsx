@@ -20,7 +20,7 @@ export default function Candidates() {
           <img
             src={horseBg}
             alt="Man riding horse through cosmic starfield"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover candidates-hero-image"
             style={{ objectPosition: '100% 45%', transform: 'translateX(8%)' }}
           />
           {/* Top shadow */}
@@ -32,7 +32,7 @@ export default function Candidates() {
           />
           {/* Left vignette */}
           <div
-            className="absolute inset-0"
+            className="absolute inset-0 candidates-hero-vignette"
             style={{
               background:
                 'linear-gradient(to right, rgba(10,18,36,0.97) 0%, rgba(10,18,36,0.92) 14%, rgba(10,18,36,0.78) 28%, rgba(10,18,36,0.48) 44%, rgba(10,18,36,0.18) 60%, rgba(10,18,36,0.04) 74%, transparent 86%)',
@@ -56,8 +56,8 @@ export default function Candidates() {
           />
         </div>
 
-        {/* Hero content */}
-        <div className="relative z-10 px-8 md:px-10 pb-20 md:pb-28 max-w-3xl" style={{ marginLeft: 'clamp(1rem, 6vw, 7rem)' }}>
+        {/* Hero content — centered on mobile, left-aligned on md+ */}
+        <div className="relative z-10 w-full px-6 sm:px-8 md:px-10 pb-32 sm:pb-36 md:pb-28 text-center md:text-left md:max-w-3xl md:ml-[clamp(1rem,6vw,7rem)]">
           <p
             className="text-xs font-semibold uppercase tracking-widest mb-5"
             style={{ color: 'rgba(217,138,61,0.9)', letterSpacing: '0.22em' }}
@@ -67,9 +67,9 @@ export default function Candidates() {
           <h1
             className="font-serif font-light mb-6"
             style={{
-              fontSize: 'clamp(3rem, 4.2vw, 5rem)',
+              fontSize: 'clamp(1.85rem, 4.2vw, 5rem)',
               letterSpacing: '-0.025em',
-              lineHeight: 1.07,
+              lineHeight: 1.1,
               color: '#F7F4EF',
               textShadow: '0 2px 20px rgba(0,0,0,0.25)',
             }}
@@ -81,17 +81,17 @@ export default function Candidates() {
             three times more often.
           </h1>
           <p
-            className="text-base md:text-lg font-light leading-relaxed mb-10"
+            className="text-sm sm:text-base md:text-lg font-light leading-relaxed mb-8 mx-auto md:mx-0"
             style={{ color: 'rgba(247,244,239,0.80)', maxWidth: '32rem' }}
           >
             HeroScouter puts a specialist in your corner — someone who knows the
             hiring manager, understands the role, and gets your profile seen by the
             right people at the right time.
           </p>
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-col sm:flex-row flex-wrap gap-3 items-center md:items-start justify-center md:justify-start">
             <a
               href="#submit"
-              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-sm font-semibold transition-all duration-200 hover:brightness-110 hover:scale-[1.03]"
+              className="flex items-center justify-center w-full sm:w-auto gap-2 px-7 py-3.5 rounded-full text-sm font-semibold transition-all duration-200 hover:brightness-110 hover:scale-[1.03]"
               style={{
                 background: 'linear-gradient(135deg, #C8923A 0%, #D4A052 50%, #C07828 100%)',
                 color: '#1a0e04',
@@ -101,7 +101,7 @@ export default function Candidates() {
             </a>
             <a
               href="#roles"
-              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-sm font-medium transition-all duration-200 hover:scale-[1.03]"
+              className="flex items-center justify-center w-full sm:w-auto gap-2 px-7 py-3.5 rounded-full text-sm font-medium transition-all duration-200 hover:scale-[1.03]"
               style={{
                 background: 'rgba(247,244,239,0.10)',
                 border: '1px solid rgba(247,244,239,0.28)',

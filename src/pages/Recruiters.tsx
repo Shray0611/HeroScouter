@@ -136,7 +136,7 @@ export default function Recruiters() {
             }}
           />
           <div
-            className="absolute inset-0"
+            className="absolute inset-0 recruiters-hero-vignette"
             style={{
               background:
                 "linear-gradient(to right, rgba(7,13,27,0.96) 0%, rgba(7,13,27,0.88) 16%, rgba(7,13,27,0.68) 34%, rgba(7,13,27,0.36) 54%, rgba(7,13,27,0.10) 72%, transparent 88%)",
@@ -159,48 +159,45 @@ export default function Recruiters() {
           />
         </div>
 
-        <div
-          className="relative z-10 px-8 md:px-10 pb-28 md:pb-40 max-w-4xl"
-          style={{ marginLeft: "clamp(1rem, 6vw, 7rem)" }}
-        >
+        {/* Hero content — centered on mobile, left-aligned on md+ */}
+        <div className="relative z-10 w-full px-6 sm:px-8 md:px-10 pb-32 sm:pb-36 md:pb-40 text-center md:text-left md:max-w-4xl md:ml-[clamp(1rem,6vw,7rem)]">
           <p
             className="text-xs font-semibold uppercase tracking-widest mb-5"
-            style={{ color: "#D4A052", letterSpacing: "0.22em" }}
+            style={{ color: '#D4A052', letterSpacing: '0.22em' }}
           >
             Join the network - commission per placement
           </p>
           <h1
             className="font-serif font-light mb-6"
             style={{
-              fontSize: "clamp(2.8rem, 5.1vw, 5.8rem)",
-              letterSpacing: "-0.025em",
-              lineHeight: 1.04,
-              color: "#F7F4EF",
-              textShadow: "0 2px 24px rgba(0,0,0,0.34)",
+              fontSize: 'clamp(1.85rem, 4.2vw, 5rem)',
+              letterSpacing: '-0.025em',
+              lineHeight: 1.08,
+              color: '#F7F4EF',
+              textShadow: '0 2px 24px rgba(0,0,0,0.34)',
             }}
           >
-            <em style={{ fontStyle: "italic", color: "#F7F4EF" }}>
+            <em style={{ fontStyle: 'italic', color: '#F7F4EF' }}>
               Just place great candidates.
             </em>
             <br />
             We handle everything else.
           </h1>
           <p
-            className="text-base md:text-lg font-light leading-relaxed mb-10"
-            style={{ color: "rgba(247,244,239,0.78)", maxWidth: "37rem" }}
+            className="text-sm sm:text-base md:text-lg font-light leading-relaxed mb-8 mx-auto md:mx-0"
+            style={{ color: 'rgba(247,244,239,0.78)', maxWidth: '37rem' }}
           >
             No client hunting. No cold outreach to companies. No chasing
             mandates. HeroScouter allocates roles to you - your only job is to
             find the right person for them.
           </p>
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-col sm:flex-row flex-wrap gap-3 items-center md:items-start justify-center md:justify-start">
             <a
               href="#apply"
-              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-sm font-semibold transition-all duration-200 hover:brightness-110 hover:scale-[1.03]"
+              className="flex items-center justify-center w-full sm:w-auto gap-2 px-7 py-3.5 rounded-full text-sm font-semibold transition-all duration-200 hover:brightness-110 hover:scale-[1.03]"
               style={{
-                background:
-                  "linear-gradient(135deg, #C8923A 0%, #D4A052 50%, #C07828 100%)",
-                color: "#1a0e04",
+                background: 'linear-gradient(135deg, #C8923A 0%, #D4A052 50%, #C07828 100%)',
+                color: '#1a0e04',
               }}
             >
               Work with Us!
@@ -351,7 +348,7 @@ export default function Recruiters() {
 
       
       {/* ── APPLY TO JOIN FORM ── */}
-      <section id="apply" className="pt-12 md:pt-16 pb-24 md:pb-32 px-8 md:px-16" style={{ background: '#EDE9E1' }}>
+      <section id="apply" className="pt-12 md:pt-16 pb-24 md:pb-32 px-4 sm:px-8 md:px-16" style={{ background: '#EDE9E1' }}>
         <div className="max-w-3xl mx-auto">
           <div className="mb-12 text-center">
             <h2
@@ -370,7 +367,7 @@ export default function Recruiters() {
           </div>
 
           <div
-            className="p-8 md:p-10"
+            className="p-5 sm:p-8 md:p-10"
             style={{
               background: '#F7F4EF',
               border: '1px solid rgba(34,38,43,0.10)',
@@ -395,7 +392,7 @@ export default function Recruiters() {
                   href={calendlyUrl()}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-7 py-3 rounded-full text-sm font-semibold transition-all duration-200 hover:brightness-110"
+                  className="inline-flex items-center justify-center gap-2 px-7 py-3 rounded-full text-sm font-semibold transition-all duration-200 hover:brightness-110"
                   style={{
                     background: 'linear-gradient(135deg, #C8923A 0%, #D4A052 50%, #C07828 100%)',
                     color: '#1a0e04',
@@ -437,15 +434,15 @@ export default function Recruiters() {
                       style={{ background: '#F7F4EF' }}
                     />
                   </div>
-                  
+
                   <div>
                     <label className="block text-sm font-medium mb-2" style={{ color: '#4A5059' }}>
                       Phone Number <span style={{ color: '#e85c5c' }}>*</span>
                     </label>
-                    <div className="flex gap-4">
+                    <div className="flex flex-col sm:flex-row gap-3">
                       <select
                         name="phoneCode"
-                        className="w-[120px] border border-[rgba(34,38,43,0.15)] rounded-xl px-4 py-3 text-[#22262B] focus:outline-none focus:border-[rgba(34,38,43,0.4)] transition-colors"
+                        className="w-full sm:w-[120px] border border-[rgba(34,38,43,0.15)] rounded-xl px-4 py-3 text-[#22262B] focus:outline-none focus:border-[rgba(34,38,43,0.4)] transition-colors"
                         style={{ background: '#F7F4EF', appearance: 'none' }}
                       >
                         <option>IN +91</option>
@@ -478,11 +475,11 @@ export default function Recruiters() {
                   </div>
                 </div>
 
-                <div className="mt-12 flex justify-end">
+                <div className="mt-12">
                   <button
                     type="submit"
                     disabled={isSubmittingApply}
-                    className="px-8 py-3.5 rounded-full text-sm font-semibold transition-all duration-200 hover:brightness-110 hover:scale-[1.03] disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full px-8 py-3.5 rounded-full text-sm font-semibold text-center transition-all duration-200 hover:brightness-110 hover:scale-[1.03] disabled:opacity-50 disabled:cursor-not-allowed"
                     style={{
                       background: 'linear-gradient(135deg, #C8923A 0%, #D4A052 50%, #C07828 100%)',
                       color: '#1a0e04',
