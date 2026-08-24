@@ -594,20 +594,24 @@ type DetailTab = 'role' | 'requirements' | 'benefits' | 'interview'
 function InterviewStages({ stages }: { stages: string }) {
   const steps = stages.split(' | ').filter(Boolean)
   return (
-    <div className="space-y-3">
+    <div className="space-y-0">
       {steps.map((step, i) => (
         <div key={i} className="flex items-start gap-3">
-          <div
-            className="flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold"
-            style={{ background: '#22262B', color: '#F7F4EF', marginTop: '1px' }}
-          >
-            {i + 1}
-          </div>
-          <div className="flex-1 pt-0.5">
-            <span className="text-sm leading-relaxed" style={{ color: '#22262B' }}>{step}</span>
+          {/* Number + connector line column */}
+          <div className="flex flex-col items-center flex-shrink-0" style={{ width: '28px' }}>
+            <div
+              className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0"
+              style={{ background: '#22262B', color: '#F7F4EF' }}
+            >
+              {i + 1}
+            </div>
             {i < steps.length - 1 && (
-              <div className="mt-3 ml-[-1.75rem] pl-[1.75rem]" style={{ borderLeft: '2px dashed rgba(34,38,43,0.12)' }} />
+              <div style={{ width: '2px', flex: 1, minHeight: '24px', background: 'rgba(34,38,43,0.12)', margin: '4px 0' }} />
             )}
+          </div>
+          {/* Step text */}
+          <div className="flex-1 pt-1 pb-5">
+            <span className="text-sm leading-relaxed" style={{ color: '#22262B' }}>{step}</span>
           </div>
         </div>
       ))}
@@ -788,11 +792,9 @@ function RoleDetail({ role, onClose }: { role: Role; onClose: () => void }) {
           {/* Right sidebar — below content on mobile, fixed-width column on desktop */}
           <div
             className="order-2 md:flex-shrink-0 flex flex-col"
-            style={{ width: undefined, borderTop: '1px solid rgba(34,38,43,0.08)', background: '#fff', padding: '1.25rem 1rem' }}
+            style={{ borderTop: '1px solid rgba(34,38,43,0.08)', background: '#fff', padding: '1.25rem 1rem' }}
           >
-            <div className="md:hidden" />{/* spacer so items flow right on desktop */}
-            <div className="md:w-[260px] md:border-t-0" style={{ }}
-            >
+            <div className="w-full md:w-[260px]">
               {/* Logo — hidden on mobile to save space */}
               <div
                 className="hidden md:flex items-center justify-center mb-4 rounded-3xl"
@@ -815,8 +817,8 @@ function RoleDetail({ role, onClose }: { role: Role; onClose: () => void }) {
 
               <p className="font-semibold text-sm mb-3 hidden md:block text-center" style={{ color: '#22262B' }}>{role.company}</p>
 
-              {/* Key stats — grid on mobile, table on desktop */}
-              <div className="grid grid-cols-2 md:grid-cols-1 gap-2 md:gap-0" style={{ borderTop: '1px solid rgba(34,38,43,0.07)' }}>
+              {/* Key stats — grid on mobile, list on desktop */}
+              <div className="grid grid-cols-2 md:grid-cols-1 gap-x-4 gap-y-0" style={{ borderTop: '1px solid rgba(34,38,43,0.07)' }}>
                 {statRows.map((row) => (
                   <div
                     key={row.label}
@@ -1059,13 +1061,13 @@ export default function Roles() {
       <SiteNav cta={{ label: 'Submit Profile', href: '/candidates' }} activeLink="Open Roles" variant="fixed" />
 
       {/* ── HERO ── */}
-      <section className="relative overflow-hidden flex flex-col justify-center" style={{ minHeight: '40vh', background: '#F7F4EF', paddingTop: '8rem' }}>
+      <section className="relative overflow-hidden flex flex-col justify-center text-center md:text-left" style={{ minHeight: '40vh', background: '#F7F4EF', paddingTop: '7rem', paddingBottom: '2rem' }}>
         <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(15,26,46,0.08) 0%, rgba(247,244,239,0) 60%)' }} />
-        <div className="relative z-10 px-8 md:px-16" style={{ marginLeft: 'clamp(0rem, 2vw, 3rem)' }}>
+        <div className="relative z-10 px-6 md:px-16" style={{ marginLeft: 'clamp(0rem, 2vw, 3rem)' }}>
           <p className="text-xs font-semibold uppercase mb-4" style={{ color: '#C8923A', letterSpacing: '0.22em' }}>
             Role Directory · {activeCount} live roles
           </p>
-          <h1 className="font-serif font-light" style={{ fontSize: 'clamp(2.2rem, 3.2vw, 3.6rem)', letterSpacing: '-0.025em', lineHeight: 1.08, color: '#07152A', maxWidth: 'none' }}>
+          <h1 className="font-serif font-light" style={{ fontSize: 'clamp(1.75rem, 3.2vw, 3.6rem)', letterSpacing: '-0.025em', lineHeight: 1.1, color: '#07152A' }}>
             Browse open roles at <em style={{ color: '#C8923A' }}>exceptional companies.</em>
           </h1>
         </div>
@@ -1083,14 +1085,14 @@ export default function Roles() {
           {/* Main */}
           <main className="flex-1 min-w-0">
             {/* Search + sort */}
-            <div className="flex gap-3 mb-4">
-              <div className="flex-1 relative">
+            <div className="flex gap-2 mb-4">
+              <div className="flex-1 relative min-w-0">
                 <svg className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none" style={{ color: 'rgba(34,38,43,0.38)' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                 </svg>
                 <input
                   type="text" value={search} onChange={(e) => setSearch(e.target.value)}
-                  placeholder="Search roles, companies, skills…"
+                  placeholder="Search roles, companies…"
                   className="w-full pl-10 pr-4 py-2.5 rounded-xl text-sm outline-none transition-all duration-200"
                   style={{ background: '#fff', border: '1.5px solid rgba(34,38,43,0.11)', color: '#22262B' }}
                   onFocus={(e) => { e.currentTarget.style.borderColor = '#C8923A' }}
@@ -1099,7 +1101,7 @@ export default function Roles() {
               </div>
               <select
                 value={sort} onChange={(e) => setSort(e.target.value)}
-                className="px-3 py-2.5 rounded-xl text-sm outline-none cursor-pointer flex-shrink-0"
+                className="hidden sm:block px-3 py-2.5 rounded-xl text-sm outline-none cursor-pointer flex-shrink-0"
                 style={{ background: '#fff', border: '1.5px solid rgba(34,38,43,0.11)', color: '#22262B', minWidth: '152px' }}
               >
                 <option value="default">Best match</option>
@@ -1108,15 +1110,27 @@ export default function Roles() {
                 <option value="salary_lo">Salary: low → high</option>
                 <option value="alpha">A–Z by title</option>
               </select>
+              {/* Mobile sort — icon only */}
+              <select
+                value={sort} onChange={(e) => setSort(e.target.value)}
+                className="sm:hidden px-2 py-2.5 rounded-xl text-xs outline-none cursor-pointer flex-shrink-0"
+                style={{ background: '#fff', border: '1.5px solid rgba(34,38,43,0.11)', color: '#22262B' }}
+              >
+                <option value="default">Best</option>
+                <option value="newest">New</option>
+                <option value="salary_hi">$ High</option>
+                <option value="salary_lo">$ Low</option>
+                <option value="alpha">A–Z</option>
+              </select>
               <button
                 onClick={() => setMobileFiltersOpen(true)}
-                className="md:hidden flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm font-medium"
+                className="md:hidden flex items-center gap-1.5 px-3 py-2.5 rounded-xl text-sm font-medium flex-shrink-0"
                 style={{ background: '#fff', border: '1.5px solid rgba(34,38,43,0.11)', color: '#22262B' }}
               >
                 <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75" />
                 </svg>
-                Filters
+                <span className="hidden xs:inline">Filters</span>
                 {activeFilterCount > 0 && (
                   <span className="w-5 h-5 rounded-full text-xs flex items-center justify-center" style={{ background: '#22262B', color: '#F7F4EF' }}>{activeFilterCount}</span>
                 )}
@@ -1207,20 +1221,35 @@ export default function Roles() {
 
                 {/* Pagination */}
                 {totalPages > 1 && (
-                  <div className="flex items-center justify-between mt-8 pt-6" style={{ borderTop: '1px solid rgba(34,38,43,0.08)' }}>
-                    <button
-                      onClick={() => { setPage((p) => Math.max(1, p - 1)); window.scrollTo({ top: (sectionRef.current?.offsetTop ?? 0) - 96, behavior: 'smooth' }) }}
-                      disabled={page === 1}
-                      className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-150"
-                      style={{ background: page === 1 ? 'rgba(34,38,43,0.04)' : '#fff', border: '1.5px solid rgba(34,38,43,0.11)', color: page === 1 ? 'rgba(34,38,43,0.28)' : '#22262B', cursor: page === 1 ? 'not-allowed' : 'pointer' }}
-                    >
-                      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
-                      </svg>
-                      Previous
-                    </button>
+                  <div className="mt-8 pt-6 flex flex-col sm:flex-row items-center gap-3 sm:justify-between" style={{ borderTop: '1px solid rgba(34,38,43,0.08)' }}>
+                    {/* Prev + Next — full width on mobile */}
+                    <div className="flex w-full sm:w-auto gap-2 sm:gap-0">
+                      <button
+                        onClick={() => { setPage((p) => Math.max(1, p - 1)); window.scrollTo({ top: (sectionRef.current?.offsetTop ?? 0) - 96, behavior: 'smooth' }) }}
+                        disabled={page === 1}
+                        className="inline-flex flex-1 sm:flex-none items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-150"
+                        style={{ background: page === 1 ? 'rgba(34,38,43,0.04)' : '#fff', border: '1.5px solid rgba(34,38,43,0.11)', color: page === 1 ? 'rgba(34,38,43,0.28)' : '#22262B', cursor: page === 1 ? 'not-allowed' : 'pointer' }}
+                      >
+                        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                        </svg>
+                        Previous
+                      </button>
+                      <button
+                        onClick={() => { setPage((p) => Math.min(totalPages, p + 1)); window.scrollTo({ top: (sectionRef.current?.offsetTop ?? 0) - 96, behavior: 'smooth' }) }}
+                        disabled={page === totalPages}
+                        className="sm:hidden inline-flex flex-1 items-center justify-center gap-2 ml-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-150"
+                        style={{ background: page === totalPages ? 'rgba(34,38,43,0.04)' : '#fff', border: '1.5px solid rgba(34,38,43,0.11)', color: page === totalPages ? 'rgba(34,38,43,0.28)' : '#22262B', cursor: page === totalPages ? 'not-allowed' : 'pointer' }}
+                      >
+                        Next
+                        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                        </svg>
+                      </button>
+                    </div>
 
-                    <div className="flex items-center gap-1">
+                    {/* Page numbers */}
+                    <div className="flex items-center gap-1 flex-wrap justify-center">
                       {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => {
                         const isActive = p === page
                         const isNear = Math.abs(p - page) <= 2 || p === 1 || p === totalPages
@@ -1248,10 +1277,11 @@ export default function Roles() {
                       })}
                     </div>
 
+                    {/* Next — desktop only */}
                     <button
                       onClick={() => { setPage((p) => Math.min(totalPages, p + 1)); window.scrollTo({ top: (sectionRef.current?.offsetTop ?? 0) - 96, behavior: 'smooth' }) }}
                       disabled={page === totalPages}
-                      className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-150"
+                      className="hidden sm:inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-150"
                       style={{ background: page === totalPages ? 'rgba(34,38,43,0.04)' : '#fff', border: '1.5px solid rgba(34,38,43,0.11)', color: page === totalPages ? 'rgba(34,38,43,0.28)' : '#22262B', cursor: page === totalPages ? 'not-allowed' : 'pointer' }}
                     >
                       Next

@@ -17,7 +17,7 @@ export default function Blog() {
       />
 
       {/* ── HERO ── */}
-      <section className="relative overflow-hidden" style={{ minHeight: '52vh' }}>
+      <section className="relative overflow-hidden" style={{ minHeight: '46vh' }}>
         <div className="absolute inset-0">
           <img
             src={blogBg}
@@ -25,12 +25,10 @@ export default function Blog() {
             className="w-full h-full object-cover"
             style={{ objectPosition: '50% 30%' }}
           />
-          {/* Dark top overlay for nav readability */}
           <div
             className="absolute inset-0"
             style={{ background: 'linear-gradient(to bottom, rgba(8,16,40,0.72) 0%, rgba(8,16,40,0.30) 30%, transparent 55%)' }}
           />
-          {/* Bottom fade to #F7F4EF */}
           <div
             className="absolute left-0 right-0 bottom-0"
             style={{
@@ -40,10 +38,7 @@ export default function Blog() {
             }}
           />
         </div>
-        <div
-          className="relative z-10 flex flex-col items-center justify-center text-center px-6"
-          style={{ paddingTop: '10rem', paddingBottom: '5rem' }}
-        >
+        <div className="relative z-10 flex flex-col items-center justify-center text-center px-6 pt-28 sm:pt-36 pb-10 sm:pb-16">
           <p
             className="text-xs font-semibold uppercase tracking-widest mb-4"
             style={{ color: '#1E4D3A' }}
@@ -53,17 +48,16 @@ export default function Blog() {
           <h1
             className="font-serif font-light"
             style={{
-              fontSize: 'clamp(2.8rem, 5vw, 4.8rem)',
+              fontSize: 'clamp(2rem, 5vw, 4.8rem)',
               letterSpacing: '-0.025em',
               lineHeight: 1.08,
               color: '#07152A',
-              textShadow: 'none',
             }}
           >
             The HeroScouter <em style={{ color: '#1E4D3A' }}>Journal</em>
           </h1>
           <p
-            className="mt-5 text-base font-light"
+            className="mt-4 text-sm sm:text-base font-light"
             style={{ color: '#1E4D3A', maxWidth: '28rem' }}
           >
             Practical thinking on hiring, recruiting, and building teams that last.
@@ -72,7 +66,7 @@ export default function Blog() {
       </section>
 
       {/* ── FEATURED POST ── */}
-      <section className="px-8 md:px-16 pb-6" style={{ background: '#F7F4EF' }}>
+      <section className="px-4 sm:px-8 md:px-16 pb-6" style={{ background: '#F7F4EF' }}>
         <div className="max-w-6xl mx-auto">
           <p className="text-xs font-semibold uppercase tracking-widest mb-6" style={{ color: 'rgba(34,38,43,0.38)', letterSpacing: '0.18em' }}>
             Featured
@@ -84,18 +78,18 @@ export default function Blog() {
           >
             {/* Cover image */}
             <div
-              className="relative flex items-center justify-center min-h-64"
-              style={{ background: featured.coverBg }}
+              className="relative flex items-center justify-center"
+              style={{ background: featured.coverBg, minHeight: '220px' }}
             >
               <img
                 src={featured.cover}
                 alt={featured.title}
-                className="w-full h-full object-cover"
-                style={{ minHeight: '280px', maxHeight: '340px' }}
+                className="w-full object-cover"
+                style={{ height: '260px' }}
               />
             </div>
             {/* Content */}
-            <div className="flex flex-col justify-center p-10 md:p-12">
+            <div className="flex flex-col justify-center p-6 sm:p-8 md:p-12">
               <div className="flex items-center gap-2 mb-4">
                 <span
                   className="text-xs font-bold uppercase tracking-widest px-2.5 py-1 rounded-full"
@@ -112,7 +106,7 @@ export default function Blog() {
               </div>
               <h2
                 className="font-serif font-light mb-4"
-                style={{ fontSize: 'clamp(1.5rem, 2.4vw, 2.1rem)', letterSpacing: '-0.02em', lineHeight: 1.18, color: '#22262B' }}
+                style={{ fontSize: 'clamp(1.25rem, 2.4vw, 2.1rem)', letterSpacing: '-0.02em', lineHeight: 1.25, color: '#22262B' }}
               >
                 {featured.title}
               </h2>
@@ -122,7 +116,7 @@ export default function Blog() {
               <div className="flex items-center gap-2">
                 <div
                   className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold shrink-0"
-                  style={{ background: '#22262B', color: '#07152A' }}
+                  style={{ background: '#22262B', color: '#F7F4EF' }}
                 >
                   {featured.author[0]}
                 </div>
@@ -136,12 +130,12 @@ export default function Blog() {
       </section>
 
       {/* ── MORE ARTICLES ── */}
-      <section className="py-14 px-8 md:px-16" style={{ background: '#F7F4EF' }}>
+      <section className="py-14 px-4 sm:px-8 md:px-16" style={{ background: '#F7F4EF' }}>
         <div className="max-w-6xl mx-auto">
           <p className="text-xs font-semibold uppercase tracking-widest mb-8" style={{ color: 'rgba(34,38,43,0.38)', letterSpacing: '0.18em' }}>
             More articles
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {rest.map((post) => (
               <Link
                 key={post.id}
@@ -149,9 +143,7 @@ export default function Blog() {
                 className="flex flex-col rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-1"
                 style={{ background: '#fff', border: '1px solid rgba(34,38,43,0.09)', boxShadow: '0 2px 18px rgba(34,38,43,0.06)' }}
               >
-                {/* Cover with left accent bar */}
                 <div className="relative" style={{ background: post.coverBg }}>
-                  {/* Left accent bar */}
                   <div
                     className="absolute top-0 left-0 bottom-0 w-1.5 z-10"
                     style={{ background: post.accentColor }}
@@ -162,7 +154,6 @@ export default function Blog() {
                     className="w-full object-cover"
                     style={{ height: '180px' }}
                   />
-                  {/* Arrow badge */}
                   <div
                     className="absolute bottom-3 right-3 w-8 h-8 rounded-full flex items-center justify-center"
                     style={{ background: post.accentColor }}
@@ -172,8 +163,7 @@ export default function Blog() {
                     </svg>
                   </div>
                 </div>
-                {/* Content */}
-                <div className="flex flex-col flex-1 p-6">
+                <div className="flex flex-col flex-1 p-5 sm:p-6">
                   <span
                     className="text-xs font-bold uppercase tracking-widest mb-3 inline-block"
                     style={{ color: post.accentColor, letterSpacing: '0.14em' }}
@@ -182,11 +172,14 @@ export default function Blog() {
                   </span>
                   <h3
                     className="font-semibold mb-3 flex-1"
-                    style={{ fontSize: '0.98rem', lineHeight: 1.45, color: '#22262B' }}
+                    style={{ fontSize: '0.95rem', lineHeight: 1.45, color: '#22262B' }}
                   >
                     {post.title}
                   </h3>
-                  <p className="text-xs leading-relaxed mb-5" style={{ color: '#4A5059', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                  <p
+                    className="text-xs leading-relaxed mb-5"
+                    style={{ color: '#4A5059', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}
+                  >
                     {post.excerpt}
                   </p>
                   <div className="flex items-center gap-2 pt-4" style={{ borderTop: '1px solid rgba(34,38,43,0.07)' }}>
@@ -221,21 +214,22 @@ export default function Blog() {
       </section>
 
       {/* ── NEWSLETTER CTA ── */}
-      <section className="py-20 px-8 md:px-16" style={{ background: '#EDE9E1' }}>
+      <section className="py-16 sm:py-20 px-4 sm:px-8 md:px-16" style={{ background: '#EDE9E1' }}>
         <div className="max-w-2xl mx-auto text-center">
           <p className="text-xs font-semibold uppercase tracking-widest mb-4" style={{ color: 'rgba(217,138,61,0.85)', letterSpacing: '0.2em' }}>
             Stay sharp
           </p>
           <h2
             className="font-serif font-light mb-4"
-            style={{ fontSize: 'clamp(1.8rem, 3.5vw, 2.8rem)', letterSpacing: '-0.025em', lineHeight: 1.12, color: '#22262B' }}
+            style={{ fontSize: 'clamp(1.5rem, 3.5vw, 2.8rem)', letterSpacing: '-0.025em', lineHeight: 1.12, color: '#22262B' }}
           >
             <em>Hiring insight, once a fortnight.</em>
           </h2>
-          <p className="text-sm font-light mb-8" style={{ color: 'rgba(34,38,43,0.55)' }}>
+          <p className="text-sm font-light mb-8 px-2" style={{ color: 'rgba(34,38,43,0.55)' }}>
             No noise. No job board spam. Just well-considered takes on recruiting, hiring, and building great teams.
           </p>
-          <div className="flex gap-3 max-w-md mx-auto">
+          {/* Stack on mobile, side by side on sm+ */}
+          <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
             <input
               type="email"
               placeholder="Your email address"
@@ -247,7 +241,7 @@ export default function Blog() {
               }}
             />
             <button
-              className="px-6 py-3 rounded-full text-sm font-semibold shrink-0 transition-all duration-200 hover:brightness-110"
+              className="flex items-center justify-center px-6 py-3 rounded-full text-sm font-semibold transition-all duration-200 hover:brightness-110 whitespace-nowrap"
               style={{ background: 'linear-gradient(135deg, #C8923A 0%, #D4A052 50%, #C07828 100%)', color: '#1a0e04' }}
             >
               Subscribe

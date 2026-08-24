@@ -1,5 +1,8 @@
-import cover1 from '../imports/FDE.png'
+import cover1 from '../imports/Forward_Deployed.jpg'
 import cover2 from '../imports/blogs-cover-2.jpg'
+import cover3 from '../imports/blog_post3.jpg'
+import cover4 from '../imports/blogpost4.jpg'
+
 
 export interface BlogPost {
   id: string
@@ -123,6 +126,104 @@ export const blogPosts: BlogPost[] = [
       <p><strong>Which AI role is hardest to hire right now?</strong> The hybrids. Applied AI Engineers who can also own product decisions, and anyone who pairs strong engineering with real customer or commercial instinct, are the roles that stay open longest.</p>
       <br />
       <p>Matching the right kind of AI engineer to the actual job is what we do at HeroScouter. If you are not sure which one you need, that is usually the first useful conversation to have.</p>
+    `
+  },
+  {
+    id: 'ai-engineer-salary',
+    slug: 'ai-engineer-salary-2026',
+    cover: cover3,
+    coverBg: '#f0ebe3',
+    accentColor: '#C8923A',
+    accentBg: 'rgba(200,146,58,0.10)',
+    category: 'Hiring',
+    title: 'AI Engineer Salary in 2026: What Companies Actually Pay (and Why the Range Is So Wide)',
+    excerpt: 'AI engineer salaries in 2026 range from about 134K to over 1M. Here is why the range is so wide, and what you should actually budget to hire.',
+    author: 'Siddharth Gupta',
+    date: 'Aug 18, 2026',
+    readTime: '5 min read',
+    featured: false,
+    content: `
+      <p>If you go looking for the AI engineer salary in 2026, you will find numbers ranging from roughly 134,000 dollars to well over a million. That is not sloppy data. It is the most important thing to understand about this market. The title "AI engineer" now covers at least five different jobs, and they are not paid the same because they are not the same work.</p>
+      <p>Here is what the numbers actually say, and how to read them before you set a budget.</p>
+
+      <h3>The honest headline number</h3>
+      <p>For a mainstream AI or machine learning engineer at a normal tech company, base salary in 2026 sits roughly between 134,000 and 193,000 dollars, with a midpoint near 170,000, according to the Robert Half 2026 guide. Blend in equity and bonus and the average total compensation climbs to around 242,000, per Levels.fyi.</p>
+      <p>So if someone asks for a single number, "a bit over 200,000 all in for a solid mid-level hire" is defensible for most companies. But the single number hides the whole story.</p>
+
+      <h3>Why the range is so wide</h3>
+      <p>The market has split in two, and the gap between the halves is enormous.</p>
+      <p>On one side, enterprise AI and ML engineers, the people building recommendation systems, fraud models, and internal copilots, mostly land in the 170,000 to 245,000 total range. On the other side, a small group at frontier labs commands 600,000 to over a million for the same job title, with reported medians at the very top approaching 800,000. Same two words on the business card, a six times difference in pay.</p>
+      <p>Three things drive where a given role falls.</p>
+      <p><strong>Company stage and type.</strong> Frontier labs pay the most, then late-stage and well-funded startups, then enterprise. At AI-native startups specifically, base for an ML engineer clusters around 200,000, with the middle of the market running roughly 184,000 to 249,000.</p>
+      <p><strong>Specialty.</strong> Not all AI work is priced equally. People who work on LLMs, RAG, and agents tend to command a premium over computer vision, which in turn sits above traditional machine learning.</p>
+      <p><strong>City.</strong> San Francisco, New York, and Seattle run something like 25 to 40 percent above the national midpoint. Remote roles usually sit below it.</p>
+
+      <h3>Base is not the real number</h3>
+      <p>The most common budgeting mistake is anchoring on base salary alone. At the senior end, total compensation is where the real money lives.</p>
+      <p>Equity is the big one, especially at startups. A senior hire at a Series A company might get 0.1 to 0.4 percent, and at Series B or C more like 0.05 to 0.2 percent. On paper that can add anywhere from tens of thousands to several hundred thousand dollars a year in value, though startup equity is a bet, not cash.</p>
+      <p>Sign-on bonuses have also become standard at the senior and staff level, often 50,000 to 200,000 dollars, largely to buy out equity a candidate would forfeit by leaving their current job. If you are not prepared for that conversation, you will lose people at the finish line.</p>
+
+      <h3>What this means if you are hiring</h3>
+      <p>Do not benchmark against the wrong tier. If you are a Series A startup quietly comparing your offer to what you read about OpenAI, you will scare yourself out of hiring anyone. Those numbers are a different market. Benchmark against companies at your stage, in your city, hiring your specialty.</p>
+      <p>Refresh your bands more often than you think. AI and ML pay rose roughly 4 percent in 2026, more than double the broader tech average. A band you set a year ago is probably already low, which is a common reason a role sits open for months while everyone blames the market.</p>
+      <p>And decide which "AI engineer" you actually need before you price the role. An applied engineer building on top of existing models is a different hire, at a different price, from someone training models from scratch. Getting that wrong is the most expensive salary mistake there is.</p>
+
+      <h3>FAQ</h3>
+      <p><strong>How much does an AI engineer make in 2026?</strong> For a typical mid-level hire at a normal company, expect roughly 170,000 base and around 200,000 to 240,000 total. Senior engineers at top startups and labs go far higher once equity is included.</p>
+      <p><strong>Why do AI engineer salaries vary so much?</strong> Because the title spans very different jobs and employers, from enterprise teams to frontier labs, with a genuine six times spread between the bottom and the top of the market.</p>
+      <p><strong>Do AI engineers at startups earn less?</strong> Often a little less base, but with meaningfully more equity. The trade is cash certainty now versus a larger, riskier upside later.</p>
+      <br />
+      <p><em>Figures are directional and current to 2026, drawn from Robert Half, Levels.fyi, Glassdoor, and specialist recruiter data. Refresh annually.</em></p>
+      <p>Getting the band right for your stage and specialty is half of landing the hire. That is the kind of thing we help companies get right at HeroScouter. See <a href="/roles">our active roles</a> or read <a href="/blog/applied-ai-engineer-vs-machine-learning-engineer">Applied AI Engineer vs Machine Learning Engineer</a>.</p>
+    `
+  },
+  {
+    id: 'ai-engineer-interview',
+    slug: 'how-to-interview-an-ai-engineer',
+    cover: cover4,
+    coverBg: '#e8f0ea',
+    accentColor: '#1E4D3A',
+    accentBg: 'rgba(30,77,58,0.10)',
+    category: 'Hiring',
+    title: 'How to Interview an AI Engineer (When Leetcode Tells You Nothing)',
+    excerpt: 'Standard coding interviews no longer predict who can do real AI work. Here is what to test instead, and the over-correction to avoid.',
+    author: 'Ronak Raut',
+    date: 'Aug 21, 2026',
+    readTime: '4 min read',
+    featured: false,
+    content: `
+      <p>The standard technical interview was built for a world where writing correct code by hand was the hard, rare skill. That world is mostly gone. Models now write clean boilerplate on demand, which means an interview that only tests whether someone can produce clean boilerplate tells you almost nothing about whether they can do real AI work.</p>
+      <p>But the fix is not to throw out rigor and hire on vibes. That is the other trap. Here is how to interview an AI engineer in a way that actually predicts who will be good.</p>
+
+      <h3>Why the old interview breaks</h3>
+      <p>A classic algorithms screen measures a narrow thing: can this person, under pressure, reproduce a solution to a puzzle they have probably seen before. For a lot of AI engineering, that skill has been quietly commoditized. The work is less about writing the function and more about deciding which function should exist, whether the model's output can be trusted, and what happens when it fails on real data.</p>
+      <p>You can pass a leetcode round and still have no idea how to build an evaluation harness, spot a subtle data leak, or tell when a model is confidently wrong. That gap is exactly where AI hires succeed or fail.</p>
+
+      <h3>What you are actually testing for</h3>
+      <p>Three things matter more than raw coding speed.</p>
+      <p><strong>Judgment about models.</strong> Do they know when to reach for a model and when not to. Can they reason about why an approach is failing rather than just swapping models until something works. Do they treat evaluation as a first-class problem, not an afterthought.</p>
+      <p><strong>Debugging the fuzzy.</strong> Traditional bugs throw errors. AI systems fail quietly, giving plausible wrong answers. The good engineers have a real method for this. Ask how they have chased down a model that was subtly, confidently wrong, and listen for whether they had a system or just got lucky.</p>
+      <p><strong>Product and data sense.</strong> The best applied AI engineers think about the user and the data, not just the model. They ask what "good" means for this specific problem before they build.</p>
+
+      <h3>A better format</h3>
+      <p>Replace the pure algorithms round with a real, messy scenario.</p>
+      <p>Give them an actual problem from your product, some imperfect data, and a vague definition of success, and watch how they work. Do they interrogate the problem first, or start coding immediately. Do they ask what good looks like. Do they think about how they would know if it worked.</p>
+      <p>Pair it with a walk-through of something real they have built. Not the polished version. Ask where it broke, what they got wrong the first time, and what they would do differently. People who have genuinely shipped AI systems have rich, specific answers here. People who have mostly read about it do not.</p>
+
+      <h3>The over-correction to avoid</h3>
+      <p>Once teams realize leetcode is failing them, many swing too far and start hiring on charisma and confident opinions about models. This is how you end up with someone who gives a great interview and cannot ship.</p>
+      <p>Rigor still matters. You are just moving it to the right target. Test whether they can reason about a real system, not whether they memorized a tree-traversal. Keep a genuine hands-on component, keep a bar, and be as suspicious of a smooth talker with no shipping scars as you are of someone who freezes on a whiteboard.</p>
+
+      <h3>The one signal that matters most</h3>
+      <p>If you take one thing from this, make it this question: "Tell me about a time your model or system was confidently wrong in production. How did you find it, and what did you change?"</p>
+      <p>A strong AI engineer has a real story, told with specifics, because this is the actual job. A weak fit either has no story or describes a simple bug that threw a clear error. The difference between those two answers predicts on-the-job performance better than any coding puzzle.</p>
+
+      <h3>FAQ</h3>
+      <p><strong>Should I still do a coding round for AI engineers?</strong> Yes, but change what it tests. Use a real, ambiguous problem over a canned algorithms puzzle, and watch how they reason, not just whether the code compiles.</p>
+      <p><strong>What is the best interview question for an AI engineer?</strong> Ask about a time their system was confidently wrong in production and how they caught it. It reveals debugging method, judgment, and whether they have actually shipped.</p>
+      <p><strong>How do I interview an AI engineer if I am not technical?</strong> Bring in a trusted technical voice for the hands-on part, and focus your own time on judgment and product sense. Listen for whether they define success clearly and think about the user, not just the model.</p>
+      <br />
+      <p>Knowing what "good" looks like for a specific AI role, and how to test for it, is the hard part of hiring here. It is also exactly what we do at HeroScouter. See <a href="/roles">our active roles</a> or read <a href="/blog/how-to-hire-a-forward-deployed-engineer">How to Hire a Forward Deployed Engineer</a>.</p>
     `
   }
 ]
