@@ -9,7 +9,11 @@ function cleanNumber(value) {
 }
 
 function statusLabel(value) {
-  return String(value ?? 'active').toLowerCase() === 'active' ? 'Active' : 'Paused'
+  const s = String(value ?? 'active').toLowerCase()
+  if (s === 'active') return 'Active'
+  if (s === 'inactive') return 'Inactive'
+  // handle legacy 'paused' values already in DB
+  return 'Inactive'
 }
 
 // Handles both the original spaced-key format AND the new camelCase format

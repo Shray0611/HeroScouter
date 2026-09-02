@@ -729,7 +729,7 @@ function RoleDetail({ role, onClose }: { role: Role; onClose: () => void }) {
                 </span>
               )}
               <span className="text-xs px-2.5 py-1 rounded-full font-medium" style={{ background: role.status === 'Active' ? 'rgba(30,77,58,0.35)' : 'rgba(180,60,60,0.20)', color: role.status === 'Active' ? '#5AC49A' : '#F08080' }}>
-                {role.status === 'Active' ? '● Active' : '● Paused'}
+                {role.status === 'Active' ? '● Active' : '● Inactive'}
               </span>
               {role.industry && (
                 <span className="text-xs px-2.5 py-1 rounded-full" style={{ background: 'rgba(247,244,239,0.10)', color: 'rgba(247,244,239,0.65)' }}>

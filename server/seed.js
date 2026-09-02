@@ -11,9 +11,9 @@ async function seed() {
     return
   }
 
-  // Split into active and paused — both go into DB, only active are served by the API
+  // Split into active and inactive — both go into DB, only active are served by the API
   const activeRoles = roles.filter((r) => r.status === 'Active')
-  const pausedRoles = roles.filter((r) => r.status !== 'Active')
+  const inactiveRoles = roles.filter((r) => r.status !== 'Active')
   const companies = activeCompaniesFromRoles(roles)
 
   const db = await getDb()
@@ -36,7 +36,7 @@ async function seed() {
   await db.collection('companies').createIndex({ active: 1 })
 
   console.log(`\nDone.`)
-  console.log(`Roles:     ${activeRoles.length} active + ${pausedRoles.length} paused = ${roles.length} total inserted`)
+  console.log(`Roles:     ${activeRoles.length} active + ${inactiveRoles.length} inactive = ${roles.length} total inserted`)
   console.log(`Companies: ${companies.length} active companies derived`)
 }
 

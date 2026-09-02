@@ -9,7 +9,7 @@ export interface Role {
   companySize: string | null
   companyWebsite: string
   companyLogoUrl: string | null
-  status: 'Active' | 'Paused'
+  status: 'Active' | 'Inactive'
   workLocation: 'Remote' | 'In-person' | 'Hybrid'
   location: string
   salaryMin: number
@@ -41,7 +41,7 @@ export const roles: Role[] = (seedData as any[]).map((r) => ({
   companySize: r.companySize ?? null,
   companyWebsite: r.companyWebsite ?? '',
   companyLogoUrl: r.companyLogoUrl ?? null,
-  status: (r.status ?? 'Active') as 'Active' | 'Paused',
+  status: (r.status ?? 'Active') as 'Active' | 'Inactive',
   workLocation: (r.workLocationType ?? 'In-person') as 'Remote' | 'In-person' | 'Hybrid',
   location: r.location ?? '',
   salaryMin: r.salaryMin ?? 0,
