@@ -2,7 +2,7 @@ import { useState, useMemo, useRef, useEffect } from 'react'
 import SiteNav from '../components/SiteNav'
 import SiteFooter from '../components/SiteFooter'
 import { roles as fallbackRoles, Role, formatSalary, parseSalaryNum } from '../data/roles'
-import { fetchActiveRoleCount, fetchRoles } from '../data/api'
+import { fetchActiveRoleCount, fetchRoles, getCachedActiveRoles } from '../data/api'
 import rolesBg from '../imports/roles_data.jpg'
 import logoFallback from '../imports/image-5.png'
 
@@ -879,8 +879,9 @@ function RoleDetail({ role, onClose }: { role: Role; onClose: () => void }) {
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function Roles() {
-  const [directoryRoles, setDirectoryRoles] = useState<Role[]>([])
-  const [loading, setLoading] = useState(true)
+  const initialCached = getCachedActiveRoles()
+  const [directoryRoles, setDirectoryRoles] = useState<Role[]>(() => initialCached ?? [])
+  const [loading, setLoading] = useState(() => !initialCached || initialCached.length === 0)
   const [filters, setFilters] = useState<Filters>({ ...EMPTY })
   const [search, setSearch] = useState('')
   const [sort, setSort] = useState('default')
@@ -889,7 +890,7 @@ export default function Roles() {
   const [salaryMax, setSalaryMax] = useState('')
   const [experienceMin, setExperienceMin] = useState('')
   const [experienceMax, setExperienceMax] = useState('')
-  const [activeCount, setActiveCount] = useState(0)
+  const [activeCount, setActiveCount] = useState(() => initialCached ? initialCached.length : 0)
   const sectionRef = useRef<HTMLDivElement>(null)
   const [page, setPage] = useState(1)
   const PAGE_SIZE = 10
@@ -902,37 +903,17 @@ export default function Roles() {
     fetchRoles('?status=active', { signal: controller.signal })
       .then((items) => {
         if (!cancelled) {
-          setDirectoryRoles(items.length ? items : activeFallbackRoles())
+          const valid = items.length ? items : activeFallbackRoles()
+          setDirectoryRoles(valid)
           setActiveCount(items.length)
           setLoading(false)
         }
       })
       .catch(() => {
         if (!cancelled) {
-          setDirectoryRoles(activeFallbackRoles())
+          setDirectoryRoles((prev) => (prev.length ? prev : activeFallbackRoles()))
           setLoading(false)
         }
-      })
-      .finally(() => window.clearTimeout(timeout))
-
-    return () => {
-      cancelled = true
-      controller.abort()
-      window.clearTimeout(timeout)
-    }
-  }, [])
-
-  useEffect(() => {
-    let cancelled = false
-    const controller = new AbortController()
-    const timeout = window.setTimeout(() => controller.abort(), ACTIVE_ROLES_FETCH_TIMEOUT)
-
-    fetchActiveRoleCount({ signal: controller.signal })
-      .then((count) => {
-        if (!cancelled) setActiveCount(count)
-      })
-      .catch(() => {
-        if (!cancelled) setActiveCount((count) => count || activeFallbackRoles().length)
       })
       .finally(() => window.clearTimeout(timeout))
 

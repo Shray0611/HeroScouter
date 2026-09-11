@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { Role, formatSalary } from '../data/roles'
-import { fallbackActiveRoles, fetchRoles } from '../data/api'
+import { fallbackActiveRoles, fetchRoles, getCachedActiveRoles } from '../data/api'
 import logoFallback from '../imports/image-28.png'
 
 function fmtSalary(role: Role) {
@@ -29,7 +29,7 @@ function RoleLogo({ src, company }: { src: string | null; company: string }) {
 
 export default function RolesSlate() {
   const [hovered, setHovered] = useState<string | null>(null)
-  const [roles, setRoles] = useState<Role[]>(() => fallbackActiveRoles(10))
+  const [roles, setRoles] = useState<Role[]>(() => getCachedActiveRoles()?.slice(0, 10) ?? fallbackActiveRoles(10))
 
   useEffect(() => {
     let cancelled = false
@@ -39,7 +39,7 @@ export default function RolesSlate() {
         if (!cancelled && items.length) setRoles(items)
       })
       .catch(() => {
-        if (!cancelled) setRoles(fallbackActiveRoles(10))
+        if (!cancelled) setRoles((prev) => prev.length ? prev : fallbackActiveRoles(10))
       })
 
     return () => { cancelled = true }
