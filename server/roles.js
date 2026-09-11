@@ -5,10 +5,20 @@ import { fileURLToPath } from 'node:url'
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 function cleanNumber(value) {
-  return typeof value === 'number' && Number.isFinite(value) ? value : null
+  if (typeof value === 'number' && Number.isFinite(value)) return value
+  if (typeof value === 'string' && value.trim() !== '') {
+    const str = value.trim().replace(/[\$,\s]/g, '')
+    if (/k$/i.test(str)) {
+      const num = parseFloat(str.replace(/k$/i, ''))
+      return !isNaN(num) ? num * 1000 : null
+    }
+    const num = parseFloat(str)
+    return !isNaN(num) && Number.isFinite(num) ? num : null
+  }
+  return null
 }
 
-function statusLabel(value) {
+export function statusLabel(value) {
   const s = String(value ?? 'active').toLowerCase()
   if (s === 'active') return 'Active'
   if (s === 'inactive') return 'Inactive'
@@ -17,7 +27,7 @@ function statusLabel(value) {
 }
 
 // Handles both the original spaced-key format AND the new camelCase format
-function normalizeRole(row) {
+export function normalizeRole(row) {
   return {
     id:               row['HS Role ID']         ?? row.hsRoleId          ?? '',
     title:            row.Title                 ?? row.title             ?? '',
@@ -27,7 +37,7 @@ function normalizeRole(row) {
     companySize:      row['Company Size']       ?? row.companySize       ?? null,
     companyWebsite:   row['Company Website']    ?? row.companyWebsite    ?? '',
     companyLogoUrl:   row['Company Logo URL']   ?? row.companyLogoUrl    ?? null,
-    status:           statusLabel(row.Status    ?? row.status),
+    status:           statusLabel(row['Public Status'] ?? row.Status ?? row.status),
     workLocation:     row['Work Location Type'] ?? row.workLocationType  ?? 'In-person',
     location:         row.Location              ?? row.location          ?? '',
     salaryMin:        cleanNumber(row['Salary Min']  ?? row.salaryMin)   ?? 0,

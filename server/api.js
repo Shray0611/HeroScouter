@@ -1,4 +1,5 @@
 import { getDb } from './db.js'
+import { syncState, runSync } from './sheets-sync.js'
 
 function sendJson(res, status, body) {
   res.statusCode = status
@@ -95,6 +96,27 @@ export function configureApiMiddleware(app) {
 
         const { _id, ...payload } = role
         return sendJson(res, 200, payload)
+      }
+
+      if (url.pathname === '/api/sync/status') {
+        return sendJson(res, 200, {
+          status:      syncState.status,
+          lastSync:    syncState.lastSync,
+          lastError:   syncState.lastError,
+          roleCount:   syncState.roleCount,
+          activeCount: syncState.activeCount,
+          nextSyncIn:  syncState.lastSync
+            ? Math.max(0, Math.round(
+                (Number(process.env.SHEETS_SYNC_INTERVAL_MS) || 300000) -
+                (Date.now() - new Date(syncState.lastSync).getTime())
+              ) / 1000) + 's'
+            : 'pending',
+        })
+      }
+
+      if (url.pathname === '/api/sync/trigger' && req.method === 'POST') {
+        runSync().catch(() => {})
+        return sendJson(res, 200, { ok: true, message: 'Sync triggered' })
       }
 
       return sendJson(res, 404, { error: 'Not found' })
