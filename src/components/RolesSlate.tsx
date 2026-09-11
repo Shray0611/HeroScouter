@@ -1,13 +1,12 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Role } from '../data/roles'
+import { Role, formatSalary } from '../data/roles'
 import { fallbackActiveRoles, fetchRoles } from '../data/api'
 import logoFallback from '../imports/image-28.png'
 
 function fmtSalary(role: Role) {
-  const sym = role.currency || '$'
-  return `${sym}${(role.salaryMin / 1000).toFixed(0)}k - ${sym}${(role.salaryMax / 1000).toFixed(0)}k`
+  return formatSalary(role)
 }
 
 function RoleLogo({ src, company }: { src: string | null; company: string }) {

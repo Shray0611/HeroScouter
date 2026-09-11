@@ -4,13 +4,12 @@ import SiteFooter from '../components/SiteFooter'
 import SiteNav from '../components/SiteNav'
 import ApplicationForm from '../components/ApplicationForm'
 import { fallbackActiveRole, fetchRole } from '../data/api'
-import { Role } from '../data/roles'
+import { Role, formatSalary } from '../data/roles'
 import logoFallback from '../imports/roles_data.jpg'
 import heroScouterLogo from '../imports/Screenshot_2026-08-10_192639-removebg-preview.png'
 
 function fmtSalary(role: Role) {
-  const sym = role.currency || '$'
-  return `${sym}${(role.salaryMin / 1000).toFixed(0)}K - ${sym}${(role.salaryMax / 1000).toFixed(0)}K`
+  return formatSalary(role)
 }
 
 function stripHtml(html: string) {
@@ -276,7 +275,7 @@ export default function RoleDetailPage() {
         </div>
 
         <!-- SALARY -->
-        <p style="font-size: 16px; font-weight: 700; color: #26303B; margin: 0 0 16px 0; font-family: 'Inter', Arial, sans-serif;">${(role.currency || '$')}${(role.salaryMin / 1000).toFixed(0)}K &ndash; ${(role.currency || '$')}${(role.salaryMax / 1000).toFixed(0)}K</p>
+        <p style="font-size: 16px; font-weight: 700; color: #26303B; margin: 0 0 16px 0; font-family: 'Inter', Arial, sans-serif;">${fmtSalary(role)}</p>
 
         <!-- CHIPS -->
         <div class="pdf-chips" style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 32px;">

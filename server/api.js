@@ -114,7 +114,7 @@ export function configureApiMiddleware(app) {
         })
       }
 
-      if (url.pathname === '/api/sync/trigger' && req.method === 'POST') {
+      if ((url.pathname === '/api/sync/trigger' || url.pathname === '/api/sync')) {
         runSync().catch(() => {})
         return sendJson(res, 200, { ok: true, message: 'Sync triggered' })
       }

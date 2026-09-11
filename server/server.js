@@ -3,8 +3,9 @@ import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
-// Load .env from same folder as server.js (works from both root and server/)
+// Load .env from server/ and root folder for local development
 config({ path: join(__dirname, '.env') })
+config({ path: join(__dirname, '..', '.env') })
 import express from 'express'
 import { configureApiMiddleware } from './api.js'
 import { startSheetsSync } from './sheets-sync.js'

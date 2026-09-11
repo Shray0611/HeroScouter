@@ -1,7 +1,7 @@
 import { useState, useMemo, useRef, useEffect } from 'react'
 import SiteNav from '../components/SiteNav'
 import SiteFooter from '../components/SiteFooter'
-import { roles as fallbackRoles, Role } from '../data/roles'
+import { roles as fallbackRoles, Role, formatSalary } from '../data/roles'
 import { fetchActiveRoleCount, fetchRoles } from '../data/api'
 import rolesBg from '../imports/roles_data.jpg'
 import logoFallback from '../imports/image-5.png'
@@ -120,10 +120,7 @@ function matchesSalary(role: Role, buckets: string[]) {
 }
 
 function fmtSalary(role: Role) {
-  const sym = role.currency || '$'
-  const lo = (role.salaryMin / 1000).toFixed(0)
-  const hi = (role.salaryMax / 1000).toFixed(0)
-  return `${sym}${lo}k – ${sym}${hi}k`
+  return formatSalary(role)
 }
 
 // ─── Dynamic filter options from data ────────────────────────────────────────
