@@ -26,35 +26,13 @@ const EMPTY: Filters = {
 
 type FilterKey = keyof Filters
 
-const ACTIVE_ROLES_CACHE_KEY = 'heroscouter.activeRoles.v3'
 const ACTIVE_ROLES_FETCH_TIMEOUT = 10000
 
 function activeFallbackRoles() {
   return fallbackRoles.filter((role) => role.status === 'Active')
 }
 
-function readCachedActiveRoles() {
-  try {
-    const cached = window.sessionStorage.getItem(ACTIVE_ROLES_CACHE_KEY)
-    if (!cached) return null
-    const parsed = JSON.parse(cached)
-    if (Array.isArray(parsed) && parsed.length) {
-      const hasSalaries = parsed.some((r) => parseSalaryNum(r.salaryMin) > 0 || parseSalaryNum(r.salaryMax) > 0)
-      if (hasSalaries) return parsed as Role[]
-    }
-    return null
-  } catch {
-    return null
-  }
-}
-
-function writeCachedActiveRoles(items: Role[]) {
-  try {
-    window.sessionStorage.setItem(ACTIVE_ROLES_CACHE_KEY, JSON.stringify(items))
-  } catch {
-    // Session storage can be unavailable in privacy modes; the fallback data still renders.
-  }
-}
+// No caching — always fetch fresh from the API to ensure salary data is correct
 
 // ─── Salary ───────────────────────────────────────────────────────────────────
 
@@ -79,9 +57,29 @@ function salaryFromInput(value: string) {
   return n < 1000 ? n * 1000 : n
 }
 
+function getRoleSalaryRange(role: Role): { min: number; max: number } {
+  let min = parseSalaryNum(role.salaryMin)
+  let max = parseSalaryNum(role.salaryMax)
+  if (min <= 0 && max <= 0) {
+    const raw = (role as any).salary || (role as any).salaryRange || (role as any).compensation || (role as any).baseSalary
+    if (typeof raw === 'string') {
+      const parts = raw.match(/\$?\d+(?:,\d+)*(?:\.\d+)?\s*k?/gi)
+      if (parts && parts.length > 0) {
+        min = parseSalaryNum(parts[0])
+        if (parts.length > 1) {
+          max = parseSalaryNum(parts[1])
+        }
+      }
+    }
+  }
+  if (min > 0 && max <= 0) max = min
+  if (max > 0 && min <= 0) min = max
+  return { min, max }
+}
+
 function matchesSalaryRange(role: Role, min: number | null, max: number | null) {
-  const sMin = parseSalaryNum(role.salaryMin)
-  const sMax = parseSalaryNum(role.salaryMax)
+  const { min: sMin, max: sMax } = getRoleSalaryRange(role)
+  if (sMin <= 0 && sMax <= 0) return false
   if (min != null && max != null && min > max) return matchesSalaryRange(role, max, min)
   if (min != null && max != null) return sMax >= min && sMin <= max
   if (min != null) return sMax >= min
@@ -110,8 +108,7 @@ function matchesExperienceRange(role: Role, minExp: number | null, maxExp: numbe
 }
 
 function midUSD(role: Role) {
-  const min = parseSalaryNum(role.salaryMin)
-  const max = parseSalaryNum(role.salaryMax)
+  const { min, max } = getRoleSalaryRange(role)
   return (min + max) / 2
 }
 
@@ -882,7 +879,8 @@ function RoleDetail({ role, onClose }: { role: Role; onClose: () => void }) {
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function Roles() {
-  const [directoryRoles, setDirectoryRoles] = useState<Role[]>(() => readCachedActiveRoles() ?? activeFallbackRoles())
+  const [directoryRoles, setDirectoryRoles] = useState<Role[]>([])
+  const [loading, setLoading] = useState(true)
   const [filters, setFilters] = useState<Filters>({ ...EMPTY })
   const [search, setSearch] = useState('')
   const [sort, setSort] = useState('default')
@@ -891,7 +889,7 @@ export default function Roles() {
   const [salaryMax, setSalaryMax] = useState('')
   const [experienceMin, setExperienceMin] = useState('')
   const [experienceMax, setExperienceMax] = useState('')
-  const [activeCount, setActiveCount] = useState(() => activeFallbackRoles().length)
+  const [activeCount, setActiveCount] = useState(0)
   const sectionRef = useRef<HTMLDivElement>(null)
   const [page, setPage] = useState(1)
   const PAGE_SIZE = 10
@@ -903,14 +901,17 @@ export default function Roles() {
 
     fetchRoles('?status=active', { signal: controller.signal })
       .then((items) => {
-        if (!cancelled && items.length) {
-          setDirectoryRoles(items)
+        if (!cancelled) {
+          setDirectoryRoles(items.length ? items : activeFallbackRoles())
           setActiveCount(items.length)
-          writeCachedActiveRoles(items)
+          setLoading(false)
         }
       })
       .catch(() => {
-        if (!cancelled) setDirectoryRoles((current) => current.length ? current : activeFallbackRoles())
+        if (!cancelled) {
+          setDirectoryRoles(activeFallbackRoles())
+          setLoading(false)
+        }
       })
       .finally(() => window.clearTimeout(timeout))
 
@@ -1297,6 +1298,13 @@ export default function Roles() {
                   </div>
                 )}
               </>
+            ) : loading ? (
+              <div className="flex flex-col items-center justify-center py-20 rounded-2xl text-center"
+                style={{ background: '#fff', border: '1px solid rgba(34,38,43,0.07)' }}>
+                <div className="w-8 h-8 rounded-full border-2 border-t-transparent animate-spin mb-4"
+                  style={{ borderColor: 'rgba(34,38,43,0.15)', borderTopColor: '#C8923A' }} />
+                <p className="text-sm" style={{ color: 'rgba(34,38,43,0.48)' }}>Loading roles…</p>
+              </div>
             ) : (
               <div className="flex flex-col items-center justify-center py-20 rounded-2xl text-center"
                 style={{ background: '#fff', border: '1px solid rgba(34,38,43,0.07)' }}>

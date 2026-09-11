@@ -59,7 +59,10 @@ async function fetchSheetRows() {
   return rows.slice(1).map((cells) => {
     const obj = {}
     headers.forEach((header, i) => {
-      obj[header] = cells[i] ?? ''
+      const val = cells[i] ?? ''
+      const trimmedKey = (header || '').trim()
+      obj[trimmedKey] = typeof val === 'string' ? val.trim() : val
+      obj[header] = val
     })
     return obj
   })
