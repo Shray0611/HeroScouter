@@ -1,7 +1,7 @@
 import { useState, useMemo, useRef, useEffect } from 'react'
 import SiteNav from '../components/SiteNav'
 import SiteFooter from '../components/SiteFooter'
-import { roles as fallbackRoles, Role, formatSalary } from '../data/roles'
+import { roles as fallbackRoles, Role, formatSalary, parseSalaryNum } from '../data/roles'
 import { fetchActiveRoleCount, fetchRoles } from '../data/api'
 import rolesBg from '../imports/roles_data.jpg'
 import logoFallback from '../imports/image-5.png'
@@ -26,7 +26,7 @@ const EMPTY: Filters = {
 
 type FilterKey = keyof Filters
 
-const ACTIVE_ROLES_CACHE_KEY = 'heroscouter.activeRoles.v1'
+const ACTIVE_ROLES_CACHE_KEY = 'heroscouter.activeRoles.v3'
 const ACTIVE_ROLES_FETCH_TIMEOUT = 10000
 
 function activeFallbackRoles() {
@@ -38,7 +38,11 @@ function readCachedActiveRoles() {
     const cached = window.sessionStorage.getItem(ACTIVE_ROLES_CACHE_KEY)
     if (!cached) return null
     const parsed = JSON.parse(cached)
-    return Array.isArray(parsed) && parsed.length ? parsed as Role[] : null
+    if (Array.isArray(parsed) && parsed.length) {
+      const hasSalaries = parsed.some((r) => parseSalaryNum(r.salaryMin) > 0 || parseSalaryNum(r.salaryMax) > 0)
+      if (hasSalaries) return parsed as Role[]
+    }
+    return null
   } catch {
     return null
   }
@@ -76,10 +80,12 @@ function salaryFromInput(value: string) {
 }
 
 function matchesSalaryRange(role: Role, min: number | null, max: number | null) {
+  const sMin = parseSalaryNum(role.salaryMin)
+  const sMax = parseSalaryNum(role.salaryMax)
   if (min != null && max != null && min > max) return matchesSalaryRange(role, max, min)
-  if (min != null && max != null) return role.salaryMax >= min && role.salaryMin <= max
-  if (min != null) return role.salaryMax >= min
-  if (max != null) return role.salaryMin <= max
+  if (min != null && max != null) return sMax >= min && sMin <= max
+  if (min != null) return sMax >= min
+  if (max != null) return sMin <= max
   return true
 }
 
@@ -104,7 +110,9 @@ function matchesExperienceRange(role: Role, minExp: number | null, maxExp: numbe
 }
 
 function midUSD(role: Role) {
-  return (role.salaryMin + role.salaryMax) / 2
+  const min = parseSalaryNum(role.salaryMin)
+  const max = parseSalaryNum(role.salaryMax)
+  return (min + max) / 2
 }
 
 function matchesSalary(role: Role, buckets: string[]) {

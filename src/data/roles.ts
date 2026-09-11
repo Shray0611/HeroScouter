@@ -31,10 +31,24 @@ export interface Role {
 
 export const roles: Role[] = [];
 
+export function parseSalaryNum(val: unknown): number {
+  if (typeof val === 'number' && Number.isFinite(val)) return val;
+  if (typeof val === 'string' && val.trim() !== '') {
+    const cleaned = val.trim().replace(/[\$,\s]/g, '');
+    if (/k$/i.test(cleaned)) {
+      const parsed = parseFloat(cleaned.replace(/k$/i, ''));
+      return !isNaN(parsed) ? parsed * 1000 : 0;
+    }
+    const parsed = parseFloat(cleaned);
+    return !isNaN(parsed) && Number.isFinite(parsed) ? parsed : 0;
+  }
+  return 0;
+}
+
 export function formatSalary(role: Partial<Role>): string {
   const sym = role.currency || '$';
-  const min = typeof role.salaryMin === 'number' && Number.isFinite(role.salaryMin) ? role.salaryMin : 0;
-  const max = typeof role.salaryMax === 'number' && Number.isFinite(role.salaryMax) ? role.salaryMax : 0;
+  const min = parseSalaryNum(role.salaryMin);
+  const max = parseSalaryNum(role.salaryMax);
 
   if (min <= 0 && max <= 0) return 'Competitive Salary';
 
