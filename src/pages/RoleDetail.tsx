@@ -163,191 +163,297 @@ export default function RoleDetailPage() {
     if (!role || isDownloading) return
     setIsDownloading(true)
 
-    // Load html2pdf.js from CDN once; cache on window
-    const loadHtml2pdf = (): Promise<any> => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      if ((window as any).html2pdf) return Promise.resolve((window as any).html2pdf)
-      return new Promise((resolve, reject) => {
-        const script = document.createElement('script')
-        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js'
-        script.onload = () => resolve((window as any).html2pdf) // eslint-disable-line @typescript-eslint/no-explicit-any
-        script.onerror = reject
-        document.head.appendChild(script)
-      })
-    }
-
-    const pdfStyles = `
-      @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500;1,9..144,600&family=Inter:wght@400;500;600;700&display=swap');
-      .pdf-shell {
-        font-family: 'Inter', Arial, Helvetica, sans-serif;
-        color: #26303B;
-        max-width: 700px;
-        margin: 0 auto;
-        padding: 0;
-      }
-      .pdf-header,
-      .pdf-title,
-      .pdf-chips,
-      .pdf-footer,
-      .pdf-section,
-      .pdf-section h2,
-      .pdf-content h1,
-      .pdf-content h2,
-      .pdf-content h3,
-      .pdf-content p,
-      .pdf-content ul,
-      .pdf-content ol,
-      .pdf-content li {
-        break-inside: avoid;
-        page-break-inside: avoid;
-      }
-      .pdf-section {
-        margin: 0 0 34px 0;
-        padding-top: 2px;
-      }
-      .pdf-section h2 {
-        color: #07152A;
-        border-bottom: 2px solid rgba(34,38,43,0.16);
-        font-family: 'Fraunces', Georgia, 'Times New Roman', serif;
-        font-size: 22px;
-        font-style: italic;
-        font-weight: 600;
-        line-height: 1.25;
-        margin: 0 0 16px 0;
-        padding: 0 0 10px 0;
-      }
-      .pdf-content {
-        font-size: 13.5px;
-        line-height: 1.75;
-        color: #26303B;
-      }
-      .pdf-content h1,
-      .pdf-content h2,
-      .pdf-content h3,
-      .pdf-content h4,
-      .pdf-content strong {
-        color: #07152A;
-        font-weight: 700;
-      }
-      .pdf-content h1,
-      .pdf-content h2,
-      .pdf-content h3,
-      .pdf-content h4 {
-        font-family: 'Fraunces', Georgia, 'Times New Roman', serif;
-        font-style: italic;
-        font-weight: 600;
-        margin: 18px 0 8px 0;
-        line-height: 1.25;
-      }
-      .pdf-content p {
-        margin: 0 0 10px 0;
-      }
-      .pdf-content ul,
-      .pdf-content ol {
-        margin: 8px 0 14px 20px;
-        padding: 0;
-      }
-      .pdf-content li {
-        margin: 0 0 8px 0;
-        padding-left: 2px;
-      }
-      .pdf-content li p {
-        margin: 0;
-      }
-    `
-
-    // Build a clean, branded HTML document for the PDF
-    const html = `
-      <style>${pdfStyles}</style>
-      <div class="pdf-shell">
-        <!-- HEADER -->
-        <div class="pdf-header" style="display: flex; align-items: center; justify-content: space-between; gap: 24px; padding-bottom: 18px; border-bottom: 2px solid #D96F18; margin-bottom: 26px;">
-          <img src="${heroScouterLogo}" alt="HeroScouter" style="width: 118px; height: auto; object-fit: contain; display: block;" />
-          <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px; font-family: 'Inter', Arial, sans-serif;">
-            <a href="https://heroscouter.com" style="font-size: 11px; color: #D96F18; text-decoration: underline; text-underline-offset: 2px;">heroscouter.com</a>
-            <span style="font-size: 10.5px; color: #8B93A3;">${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
-          </div>
-        </div>
-
-        <!-- JOB TITLE -->
-        <div class="pdf-title">
-          <h1 style="font-size: 30px; font-weight: 600; font-style: italic; margin: 0 0 6px 0; line-height: 1.2; color: #07152A; font-family: 'Fraunces', Georgia, serif;">${role.title}</h1>
-          <p style="font-size: 16px; color: #D96F18; margin: 0 0 4px 0; font-family: 'Fraunces', Georgia, serif; font-style: italic; font-weight: 600;">at ${role.company}</p>
-          <p style="font-size: 12px; color: #8B93A3; margin: 0 0 16px 0; font-family: 'Inter', Arial, sans-serif;">Role ID: ${role.id}</p>
-        </div>
-
-        <!-- SALARY -->
-        <p style="font-size: 16px; font-weight: 700; color: #26303B; margin: 0 0 16px 0; font-family: 'Inter', Arial, sans-serif;">${fmtSalary(role)}</p>
-
-        <!-- CHIPS -->
-        <div class="pdf-chips" style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 32px;">
-          ${[role.location, role.employmentType || 'Full-time', role.h1bSponsorship ? 'Visa supported' : 'US citizen/visa only', role.yoe, role.jobCategory, role.industry, role.workLocation].filter(Boolean).map(chip => `<span style="display: inline-block; padding: 3px 10px; border: 1px solid rgba(34,38,43,0.2); border-radius: 4px; font-size: 11px; color: #26303B; font-family: 'Inter', Arial, sans-serif; background: #F7F4EF;">${chip}</span>`).join('')}
-        </div>
-
-        ${(role.responsibilitiesHtml || role.responsibilities) ? `
-        <!-- ABOUT THE ROLE -->
-        <div class="pdf-section">
-          <h2>About the Role</h2>
-          <div class="pdf-content">${role.responsibilitiesHtml || role.responsibilities}</div>
-        </div>` : ''}
-
-        ${role.requirementsHtml ? `
-        <!-- REQUIREMENTS -->
-        <div class="pdf-section">
-          <h2>What You'll Bring</h2>
-          <div class="pdf-content">${role.requirementsHtml}</div>
-        </div>` : ''}
-
-        ${role.benefitsHtml || role.benefits ? `
-        <!-- BENEFITS -->
-        <div class="pdf-section">
-          <h2>Benefits</h2>
-          <div class="pdf-content">${role.benefitsHtml || role.benefits}</div>
-        </div>` : ''}
-
-        <!-- INTERVIEW PROCESS -->
-        ${role.interviewStages ? `
-          <div class="pdf-section-title">Interview Process</div>
-          <div class="pdf-content">
-            <ol style="margin-left: 18px; padding-left: 0;">
-              ${role.interviewStages.split(' | ').filter(Boolean).map((s: string) => `<li style="margin-bottom: 6px;">${s.trim()}</li>`).join('')}
-            </ol>
-          </div>
-        ` : ''}
-
-        <!-- FOOTER -->
-        <div style="margin-top: 36px; padding-top: 14px; border-top: 1px solid #E2DCD2; display: flex; justify-content: space-between; align-items: center; font-size: 10.5px; color: #8B93A3; font-family: 'Inter', Arial, sans-serif;">
-          <span>HeroScouter &mdash; Elite Talent Recruiting</span>
-          <span>Apply: heroscouter.com/roles/${encodeURIComponent(role.id)}</span>
-        </div>
-      </div>
-    `
-
-    const container = document.createElement('div')
-    container.style.position = 'fixed'
-    container.style.left = '-9999px'
-    container.style.top = '0'
-    container.style.width = '700px'
-    container.innerHTML = html
-    document.body.appendChild(container)
-
     try {
-      const html2pdf = await loadHtml2pdf()
-      const filename = `${role.company.replace(/[^a-zA-Z0-9]/g, '_')}_${role.title.replace(/[^a-zA-Z0-9]/g, '_')}_HeroScouter.pdf`
-      const opt = {
-        margin: [12, 12, 14, 12],
-        filename,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true, letterRendering: true },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] },
+      // Load jsPDF
+      const loadJsPDF = (): Promise<any> => {
+        if ((window as any).jspdf?.jsPDF) return Promise.resolve((window as any).jspdf.jsPDF)
+        return new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+          script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js'
+          script.onload = () => resolve((window as any).jspdf.jsPDF)
+          script.onerror = reject
+          document.head.appendChild(script)
+        })
       }
-      await html2pdf().set(opt).from(container).save()
+
+      // Convert any image src → base64 data URL for addImage
+      const toBase64 = (src: string): Promise<string> =>
+        fetch(src)
+          .then(r => r.blob())
+          .then(blob => new Promise((res, rej) => {
+            const fr = new FileReader()
+            fr.onload = () => res(fr.result as string)
+            fr.onerror = rej
+            fr.readAsDataURL(blob)
+          }))
+
+      const [JsPDF, logoData] = await Promise.all([
+        loadJsPDF(),
+        toBase64(heroScouterLogo).catch(() => null),
+      ])
+
+      const doc = new JsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' })
+      const pageW = doc.internal.pageSize.getWidth()
+      const pageH = doc.internal.pageSize.getHeight()
+      const ml = 18
+      const mr = 18
+      const textW = pageW - ml - mr
+      let y = 18
+
+      // ── helpers ──────────────────────────────────────────────────────────
+      const checkPage = (needed = 8) => {
+        if (y + needed > pageH - 20) { doc.addPage(); y = 18 }
+      }
+
+      const gap = (mm = 3) => { y += mm }
+
+      const rule = (r = 210, g = 200, b = 185, w = 0.3) => {
+        checkPage(5)
+        doc.setDrawColor(r, g, b)
+        doc.setLineWidth(w)
+        doc.line(ml, y, pageW - mr, y)
+        gap(4)
+      }
+
+      // text block with word-wrap
+      const txt = (
+        text: string,
+        size: number,
+        color: [number, number, number],
+        style: 'normal' | 'bold' = 'normal',
+        indent = 0,
+        lineGap = 0.45,
+      ) => {
+        if (!text.trim()) return
+        doc.setFontSize(size)
+        doc.setFont('helvetica', style)
+        doc.setTextColor(...color)
+        const lines: string[] = doc.splitTextToSize(text.trim(), textW - indent)
+        lines.forEach((line: string) => {
+          checkPage(size * 0.45)
+          doc.text(line, ml + indent, y)
+          y += size * lineGap
+        })
+      }
+
+      const sectionHeading = (title: string) => {
+        checkPage(18)
+        gap(5)
+        // Amber left accent bar
+        doc.setFillColor(217, 111, 24)
+        doc.rect(ml, y - 4, 2.5, 7, 'F')
+        doc.setFontSize(12)
+        doc.setFont('helvetica', 'bold')
+        doc.setTextColor(7, 21, 42)
+        doc.text(title, ml + 5, y)
+        y += 4
+        doc.setDrawColor(220, 210, 195)
+        doc.setLineWidth(0.3)
+        doc.line(ml, y, pageW - mr, y)
+        gap(4)
+      }
+
+      // HTML → structured lines
+      const parseHtml = (html: string) => {
+        if (!html) return []
+        type Line = { text: string; style: 'normal' | 'bold'; indent: number; spaceAfter: number }
+        const out: Line[] = []
+
+        const clean = html
+          .replace(/<br\s*\/?>/gi, '\n')
+          .replace(/<\/p>/gi, '\n\n')
+          .replace(/<\/li>/gi, '\n')
+          .replace(/<li[^>]*>/gi, '@@BULLET@@')
+          .replace(/<h[1-6][^>]*>/gi, '@@H@@')
+          .replace(/<\/h[1-6]>/gi, '\n')
+          .replace(/<strong[^>]*>([\s\S]*?)<\/strong>/gi, '@@B@@$1@@EB@@')
+          .replace(/<b[^>]*>([\s\S]*?)<\/b>/gi, '@@B@@$1@@EB@@')
+          .replace(/<[^>]+>/g, '')
+          .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+          .replace(/&nbsp;/g, ' ').replace(/&#39;/g, "'").replace(/&quot;/g, '"')
+          .replace(/&ldquo;/g, '"').replace(/&rdquo;/g, '"').replace(/&lsquo;/g, "'").replace(/&rsquo;/g, "'")
+
+        clean.split('\n').forEach(raw => {
+          const line = raw.trim()
+          if (!line) return
+
+          if (line.startsWith('@@H@@')) {
+            // sub-heading inside content
+            const text = line.replace('@@H@@', '').replace(/@@B@@|@@EB@@/g, '').trim()
+            if (text) out.push({ text, style: 'bold', indent: 0, spaceAfter: 1.5 })
+          } else if (line.startsWith('@@BULLET@@')) {
+            const text = '• ' + line.replace('@@BULLET@@', '').replace(/@@B@@|@@EB@@/g, '').trim()
+            out.push({ text, style: 'normal', indent: 4, spaceAfter: 1.5 })
+          } else {
+            // strip inline bold markers, render as normal paragraph
+            const text = line.replace(/@@B@@|@@EB@@/g, '').trim()
+            if (text) out.push({ text, style: 'normal', indent: 0, spaceAfter: 3 })
+          }
+        })
+        return out
+      }
+
+      const addSection = (html: string, fallback = '') => {
+        const lines = parseHtml(html || fallback)
+        lines.forEach(({ text, style, indent, spaceAfter }) => {
+          txt(text, 10, [55, 65, 75], style, indent)
+          gap(spaceAfter)
+        })
+      }
+
+      // ── HEADER ───────────────────────────────────────────────────────────
+      // Orange top bar
+      doc.setFillColor(217, 111, 24)
+      doc.rect(0, 0, pageW, 2, 'F')
+
+      y = 14
+      // Logo image (left) — falls back to text if unavailable
+      if (logoData) {
+        // Draw at 32mm wide, proportional height (~9mm for this logo)
+        doc.addImage(logoData, 'PNG', ml, y - 7, 40, 20)
+        y = 25
+      } else {
+        doc.setFontSize(15)
+        doc.setFont('helvetica', 'bold')
+        doc.setTextColor(217, 111, 24)
+        doc.text('HeroScouter', ml, y)
+        y = 25
+      }
+
+      // Site URL — right aligned on same row as logo
+      doc.setFontSize(8)
+      doc.setFont('helvetica', 'normal')
+      doc.setTextColor(139, 147, 163)
+      doc.text('heroscouter.com', pageW - mr, 18, { align: 'right' })
+      doc.text(
+        new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+        pageW - mr, 23, { align: 'right' }
+      )
+
+      // Divider under header
+      doc.setDrawColor(217, 111, 24)
+      doc.setLineWidth(0.5)
+      doc.line(ml, y, pageW - mr, y)
+      y += 12
+
+      // ── TITLE BLOCK ───────────────────────────────────────────────────────
+      txt(role.title, 22, [7, 21, 42], 'bold')
+      gap(1)
+      txt(`at ${role.company}`, 11, [217, 111, 24])
+      gap(1)
+
+      // Role ID + status chips row
+      const metaLine = [
+        `ID: ${role.id}`,
+        role.fundingStage,
+        role.companySize ? `${role.companySize} employees` : null,
+      ].filter(Boolean).join('   ·   ')
+      txt(metaLine, 8, [139, 147, 163])
+      gap(4)
+
+      // Salary — large + bold
+      txt(fmtSalary(role), 14, [38, 48, 59], 'bold')
+      gap(1)
+      if (role.equityMin != null && role.equityMax != null && role.equityMax > 0) {
+        txt(`Equity: ${role.equityMin}% – ${role.equityMax}%`, 9, [139, 147, 163])
+        gap(1)
+      }
+      gap(2)
+
+      // Tags — each on its own labelled item, wraps cleanly
+      const tagPairs: [string, string][] = [
+        ['Location', role.location],
+        ['Work Type', role.workLocation],
+        ['Employment', role.employmentType || 'Full-time'],
+        role.yoe ? ['Experience', role.yoe] : null,
+        role.jobCategory ? ['Category', role.jobCategory] : null,
+        role.industry ? ['Industry', role.industry] : null,
+        ['Visa', role.h1bSponsorship ? 'Sponsored' : 'Not sponsored'],
+      ].filter(Boolean) as [string, string][]
+
+      // Two-column tag grid
+      const colW = textW / 2
+      tagPairs.forEach(([label, value], i) => {
+        const x = ml + (i % 2) * colW
+        if (i % 2 === 0) checkPage(6)
+        doc.setFontSize(7.5)
+        doc.setFont('helvetica', 'bold')
+        doc.setTextColor(139, 147, 163)
+        doc.text(label.toUpperCase(), x, y)
+        doc.setFontSize(9)
+        doc.setFont('helvetica', 'normal')
+        doc.setTextColor(38, 48, 59)
+        doc.text(value, x, y + 3.5)
+        if (i % 2 === 1 || i === tagPairs.length - 1) y += 10
+      })
+      gap(3)
+
+      rule(217, 111, 24, 0.4)
+
+      // ── CONTENT SECTIONS ─────────────────────────────────────────────────
+      if (role.responsibilitiesHtml || role.responsibilities) {
+        sectionHeading('About the Role')
+        addSection(role.responsibilitiesHtml, role.responsibilities)
+      }
+
+      if (role.requirementsHtml || role.requirements) {
+        sectionHeading("What You'll Bring")
+        addSection(role.requirementsHtml, role.requirements)
+      }
+
+      if (role.benefitsHtml || role.benefits) {
+        sectionHeading('Benefits')
+        addSection(role.benefitsHtml, role.benefits)
+      }
+
+      if (role.interviewStages) {
+        sectionHeading('Interview Process')
+        role.interviewStages.split(' | ').filter(Boolean).forEach((stage, i) => {
+          checkPage(8)
+          // Number circle (drawn as filled circle + white text)
+          doc.setFillColor(7, 21, 42)
+          doc.circle(ml + 3, y - 1.5, 3, 'F')
+          doc.setFontSize(7)
+          doc.setFont('helvetica', 'bold')
+          doc.setTextColor(255, 255, 255)
+          doc.text(String(i + 1), ml + 3, y - 0.2, { align: 'center' })
+          // Stage text
+          doc.setFontSize(10)
+          doc.setFont('helvetica', 'normal')
+          doc.setTextColor(55, 65, 75)
+          const wrapped: string[] = doc.splitTextToSize(stage.trim(), textW - 10)
+          wrapped.forEach((line: string, li: number) => {
+            doc.text(line, ml + 8, li === 0 ? y : y + li * 4.5)
+          })
+          y += Math.max(wrapped.length * 4.5, 8)
+          gap(1)
+        })
+      }
+
+      // ── FOOTER (every page) ───────────────────────────────────────────────
+      const totalPages = (doc.internal as any).pages.length - 1
+      for (let p = 1; p <= totalPages; p++) {
+        doc.setPage(p)
+        const fy = pageH - 10
+        doc.setDrawColor(220, 210, 195)
+        doc.setLineWidth(0.25)
+        doc.line(ml, fy - 3, pageW - mr, fy - 3)
+        doc.setFontSize(7)
+        doc.setFont('helvetica', 'normal')
+        doc.setTextColor(139, 147, 163)
+        doc.text('HeroScouter — heroscouter.com', ml, fy)
+        doc.text(`Page ${p} of ${totalPages}`, pageW / 2, fy, { align: 'center' })
+        doc.text(`/roles/${encodeURIComponent(role.id)}`, pageW - mr, fy, { align: 'right' })
+      }
+
+      // ── SAVE ─────────────────────────────────────────────────────────────
+      const filename = `${role.company.replace(/[^a-zA-Z0-9]/g, '_')}_${role.title.replace(/[^a-zA-Z0-9]/g, '_')}_HeroScouter.pdf`
+      doc.save(filename)
+
     } catch (err) {
-      console.error('PDF export failed, using browser print fallback:', err)
+      console.error('PDF generation failed:', err)
       window.print()
     } finally {
-      document.body.removeChild(container)
       setIsDownloading(false)
     }
   }
