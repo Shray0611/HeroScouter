@@ -105,18 +105,24 @@ export function configureApiMiddleware(app) {
           lastError:   syncState.lastError,
           roleCount:   syncState.roleCount,
           activeCount: syncState.activeCount,
-          nextSyncIn:  syncState.lastSync
-            ? Math.max(0, Math.round(
-                (Number(process.env.SHEETS_SYNC_INTERVAL_MS) || 300000) -
-                (Date.now() - new Date(syncState.lastSync).getTime())
-              ) / 1000) + 's'
-            : 'pending',
         })
       }
 
-      if ((url.pathname === '/api/sync/trigger' || url.pathname === '/api/sync')) {
-        runSync().catch(() => {})
-        return sendJson(res, 200, { ok: true, message: 'Sync triggered' })
+      // Manual sync trigger — protected by SYNC_SECRET env var
+      // Hit: GET api.heroscouter.com/api/sync?secret=YOUR_SECRET
+      if (url.pathname === '/api/sync' || url.pathname === '/api/sync/trigger') {
+        const secret = process.env.SYNC_SECRET
+        if (secret && url.searchParams.get('secret') !== secret) {
+          return sendJson(res, 401, { error: 'Unauthorized' })
+        }
+        // Run sync in background — respond immediately
+        runSync()
+          .then(() => console.log('[api] Manual sync completed'))
+          .catch((err) => console.error('[api] Manual sync failed:', err))
+        return sendJson(res, 200, {
+          ok: true,
+          message: 'Sync started. Check /api/sync/status for progress.',
+        })
       }
 
       return sendJson(res, 404, { error: 'Not found' })

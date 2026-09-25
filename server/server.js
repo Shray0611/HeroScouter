@@ -8,7 +8,6 @@ config({ path: join(__dirname, '.env') })
 config({ path: join(__dirname, '..', '.env') })
 import express from 'express'
 import { configureApiMiddleware } from './api.js'
-import { startSheetsSync } from './sheets-sync.js'
 
 const app = express()
 const port = Number(process.env.PORT || process.env.API_PORT || 3001)
@@ -39,6 +38,4 @@ configureApiMiddleware(app)
 
 app.listen(port, '0.0.0.0', () => {
   console.log(`HeroScouter API listening on port ${port}`)
-  // Start Google Sheets → MongoDB live sync
-  startSheetsSync()
 })
