@@ -3,6 +3,7 @@ import cover2 from "../imports/blogs-cover-2.jpg";
 import cover3 from "../imports/blog_post3.jpg";
 import cover4 from "../imports/blogpost4.jpg";
 import cover5 from "../imports/blog_post5.jpeg";
+import cover6 from "../imports/blog_post_6.jpeg";
 
 export interface BlogPost {
   id: string;
@@ -281,6 +282,86 @@ export const blogPosts: BlogPost[] = [
       <p><strong>If you turn off the filter, how do you manage three hundred applications?</strong> You stop collecting three hundred applications for roles where quality matters most. Close the wide-open public posting and route the search through people who already know good work when they see it, recruiters, current employees, trusted second-degree connections. The volume problem disappears when you stop optimizing for volume.</p>
       <p><strong>Isn't manual review just slower?</strong> It looks slower until you count what the filter actually costs you. An hour spent on five candidates someone already trusts beats six weeks spent interviewing twenty candidates a keyword match let through, most of whom won't survive a real conversation about their own work.</p>
       <p><strong>If the resume doesn't matter as much anymore, what does?</strong> Evidence a machine can't fake. A repository with real commit history. A conversation about a decision that went wrong and what was learned from it. A specific person willing to say, in their own words, that this candidate is who they claim to be. That's harder to manufacture than a keyword, and that's exactly the point.</p>
+    `,
+  },
+  {
+    id: 'fake-job-candidates',
+    slug: 'fake-job-candidates',
+    cover: cover6,
+    coverBg: '#1a2236',
+    accentColor: '#C0603F',
+    accentBg: 'rgba(192,96,63,0.10)',
+    category: 'Hiring',
+    title: 'Fake Job Candidates Are Passing Your Technical Interviews',
+    excerpt: 'Fake candidates are clearing two technical screens, passing video interviews and getting hired. Here are the red flags recruiters are actually seeing, and what actually works.',
+    author: 'Rishika Suhane',
+    date: 'September 29, 2026',
+    readTime: '6 min read',
+    featured: false,
+    content: `
+      <p>Most advice on <strong>fake job candidates</strong> assumes they are easy to spot: a glitchy deepfake, a bad script, an obvious lie. The recruiters and hiring managers we listened to describe something worse. Fake candidates are clearing two technical screens, passing video interviews and getting hired.</p>
+      <p>This is not a fringe problem. A <a href="https://www.securitymagazine.com/articles/102140-41-of-organizations-have-hired-a-fake-candidate" target="_blank" rel="noopener noreferrer">GetReal Security report</a> found that <strong>41% of IT, cybersecurity, risk and fraud leaders say their company has hired and onboarded a fraudulent candidate</strong>.</p>
+      <p>Even security companies get caught. In 2024, security training firm <a href="https://blog.knowbe4.com/how-a-north-korean-fake-it-worker-tried-to-infiltrate-us" target="_blank" rel="noopener noreferrer">KnowBe4</a> hired a software engineer <strong>after four video interviews and a clean background check</strong>. The engineer was a North Korean operative using a stolen US identity. The moment the company laptop arrived, it started loading malware.</p>
+      <p>At HeroScouter, we see this pattern too, especially on remote engineering roles. To write this, we went past the usual statistics and read what recruiters and hiring managers are saying in their own words. Here is what they are seeing, and what actually works.</p>
+
+      <h3>Why it is mostly an IT problem</h3>
+      <p>One pattern came up again and again: recruiters hiring for engineering and IT roles are flooded with fake applicants. Recruiters hiring for finance or management roles mostly are not seeing the same thing.</p>
+      <p>The reason is simple. Tech roles are usually remote, pay well and come with system access from day one. According to <a href="https://www.gem.com/blog/fake-job-applicants" target="_blank" rel="noopener noreferrer">Gem</a>, many fraud rings collect a full US salary and hand the actual work to cheaper contractors, keeping the difference. Some are state-backed. In November 2025, the <a href="https://www.justice.gov/opa/pr/justice-department-announces-nationwide-actions-combat-illicit-north-korean-government" target="_blank" rel="noopener noreferrer">US Department of Justice</a> announced guilty pleas in <strong>North Korean IT worker</strong> schemes that affected 136 US companies.</p>
+      <p>For a startup, the damage goes beyond a wasted salary. A fake engineer inside your workspace can see your code, your customer data and your internal Slack. One bad hire can put the whole company at risk.</p>
+
+      <h3>Red flags recruiters are actually seeing</h3>
+      <p>These come from people doing the hiring, not from vendor reports. None of them proves fraud on its own. Two or three together deserve a closer look.</p>
+      <p><strong>1. No LinkedIn, or a brand-new one.</strong> Post a remote engineering role and you will get a wave of resumes. Many fake applicants have no LinkedIn at all, or a profile created a few weeks ago that claims ten years of experience. Look for connections, past activity and colleagues who can vouch for them. A real ten-year career leaves a trail.</p>
+      <p><strong>2. They never negotiate salary.</strong> A candidate asks for $160K, you offer $90K, and they accept without pushing back. Real senior engineers negotiate. Someone who plans to collect a salary and outsource the work often does not care about the number.</p>
+      <p><strong>3. They call back from a different number.</strong> You call the number on the resume and nobody picks up. A few minutes later, they call you back from a different number. That suggests the contact details are shared or not really theirs.</p>
+      <p><strong>4. They insist on Google Voice or text only.</strong> Virtual numbers hide where someone is. Avoiding live calls also means you cannot hear how they speak, and whether a person claiming five or ten years of experience sounds like it.</p>
+      <p><strong>5. They go quiet when you suggest meeting in person.</strong> Some candidates vanish as soon as an in-person meeting comes up. A missed meeting is not proof. A candidate who refuses every form of live verification is.</p>
+      <p><strong>6. A different person shows up for work.</strong> A skilled person does every interview, then someone else logs in on day one. Their voice, skills or camera habits do not match the person you hired.</p>
+      <p><strong>7. Their documents look fine.</strong> KnowBe4's hire passed a background check because the identity was stolen from a real American. A document check alone is not enough.</p>
+      <p><strong>8. The laptop goes somewhere else.</strong> In the KnowBe4 case, the company laptop was sent to an address that did not match where the employee said they lived. Always ship equipment to a verified home address.</p>
+
+      <h3>The new ask: US-based, and prove it</h3>
+      <p>More and more hiring managers now tell recruiters they want <strong>US-based candidates</strong> only, with a LinkedIn profile that backs it up. The worry is not really where someone lives. It is whether they are who they say they are.</p>
+      <p>That changes what screening needs to cover:</p>
+      <ul>
+        <li><strong>Location:</strong> does their LinkedIn history, phone number, time zone and shipping address all point to the same place?</li>
+        <li><strong>Work authorization:</strong> confirm it with proper documents during onboarding, not just a checkbox on the application.</li>
+        <li><strong>Consistency:</strong> the name, photo, work history and references should match across the resume, LinkedIn and every call.</li>
+      </ul>
+      <p>None of this means rejecting people because of their name, accent or background. Plenty of genuine candidates were born elsewhere. The test is whether their story checks out.</p>
+
+      <h3>The other side: great candidates are getting filtered out</h3>
+      <p>There is a cost to all this suspicion. As companies add AI filters to keep fakes out, strong remote candidates get rejected too. Filters match keywords, which rewards the perfectly tailored resume that fraudsters produce at scale.</p>
+      <p>The missing piece is <strong>human review</strong>. A person who reads the resume, checks the LinkedIn history and talks to the candidate catches fakes that software misses. They also spot the real talent that software throws away.</p>
+
+      <h3>How to verify candidates without scaring off good ones</h3>
+      <p>You do not need a heavy process. You need a few checks at the right stages.</p>
+      <h3>Before the first interview</h3>
+      <p>Run the quick checks from the red flags above: LinkedIn history, a live call to the number on the resume, and a search for the same resume under other names.</p>
+      <h3>During interviews</h3>
+      <p>Keep cameras on with no background blur or filters. Ask unscripted follow-ups: "What broke first? Who did you call? What would you do differently?" Ask them to do something unplanned on camera, like turning their head or holding up today's date on paper.</p>
+      <h3>Before the offer</h3>
+      <p>Call references you find yourself on LinkedIn, not the numbers the candidate gave you. Verify ID and work authorization on a live video call, not just through uploaded documents. If you use Greenhouse or another ATS, add a fraud detection tool like <a href="https://integrations.greenhouse.com/partners/attesto" target="_blank" rel="noopener noreferrer">Attesto</a>, which flags most fraudulent applications before anyone reads them.</p>
+      <h3>The first 30 days</h3>
+      <p>Ship the laptop only to a verified home address, keep system access limited until identity is confirmed, and watch for any change from the person you interviewed.</p>
+
+      <h3>How HeroScouter screens every candidate</h3>
+      <p>At HeroScouter, a person reviews every candidate before a founder ever sees them. No one reaches you on the strength of a keyword match.</p>
+      <ol>
+        <li><strong>LinkedIn and background check.</strong> We go through each candidate's LinkedIn history, connections and work record, and check that it matches the resume.</li>
+        <li><strong>Technical round.</strong> We test whether the skills on the resume hold up in a live conversation.</li>
+        <li><strong>Human screening round.</strong> A HeroScouter recruiter talks with every candidate directly, looking for the green flags and red flags that software misses.</li>
+      </ol>
+      <p>That is how we keep fakes out without losing the strong, adaptable candidates that automated filters throw away. <a href="/candidates">See how we work with candidates</a> or <a href="/companies">talk to us about hiring</a>.</p>
+
+      <h3>Fake job candidate FAQs</h3>
+      <p><strong>How common are fake job candidates?</strong> 41% of IT, security and fraud leaders say their company has hired a fraudulent candidate, according to GetReal Security. <a href="https://www.gartner.com/en/newsroom/press-releases/2025-07-31-gartner-survey-shows-just-26-percent-of-job-applicants-trust-ai-will-fairly-evaluate-them" target="_blank" rel="noopener noreferrer">Gartner</a> predicts that one in four candidate profiles worldwide could be fake by 2028.</p>
+      <p><strong>Which roles are targeted most?</strong> Remote engineering and IT roles. They pay well, are often filled without meeting in person and come with system access from day one.</p>
+      <p><strong>Can fake candidates pass technical interviews?</strong> Yes. Some use a skilled stand-in for every interview, then send someone else to do the job. KnowBe4's fake hire passed four video interviews.</p>
+      <p><strong>Is a background check enough?</strong> No. Fraudsters often use stolen identities of real people, so the background check comes back clean. Combine it with LinkedIn checks, live reference calls and live ID verification.</p>
+      <p><strong>Will these checks put off good candidates?</strong> Not if they are quick and explained. Real candidates understand why a company protects its systems. Just do not treat a missed in-person meeting as proof of fraud.</p>
+      <br />
+      <p>Hiring remote engineers and want every candidate checked by a real person before they reach you? That is exactly what HeroScouter does. <a href="/candidates">Get started here.</a></p>
     `,
   },
 ];

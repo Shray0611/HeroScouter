@@ -5,7 +5,7 @@ import { blogPosts } from '../data/blog'
 import { Link } from 'react-router'
 
 const featured = blogPosts.find((p) => p.featured)!
-const rest = blogPosts.filter((p) => !p.featured)
+const rest = [...blogPosts].reverse().filter((p) => !p.featured)
 
 export default function Blog() {
   return (
