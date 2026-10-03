@@ -4,6 +4,7 @@ import cover3 from "../imports/blog_post3.jpg";
 import cover4 from "../imports/blogpost4.jpg";
 import cover5 from "../imports/blog_post5.jpeg";
 import cover6 from "../imports/blog_post_6.jpeg";
+import cover7 from "../imports/blog_post7.png";
 
 export interface BlogPost {
   id: string;
@@ -362,6 +363,87 @@ export const blogPosts: BlogPost[] = [
       <p><strong>Will these checks put off good candidates?</strong> Not if they are quick and explained. Real candidates understand why a company protects its systems. Just do not treat a missed in-person meeting as proof of fraud.</p>
       <br />
       <p>Hiring remote engineers and want every candidate checked by a real person before they reach you? That is exactly what HeroScouter does. <a href="/candidates">Get started here.</a></p>
+    `,
+  },
+  {
+    id: 'how-to-get-a-job-at-a-startup',
+    slug: 'how-to-get-a-job-at-a-startup-2026',
+    cover: cover7,
+    coverBg: '#0f1a2e',
+    accentColor: '#1E4D3A',
+    accentBg: 'rgba(30,77,58,0.10)',
+    category: 'Careers',
+    title: 'How to Get a Job at a Startup in 2026, When AI Is Shrinking Teams',
+    excerpt: 'AI is shrinking tech teams, but US startups still hire. Here is what they look for now, how they find people, and how to get noticed when cold applying fails.',
+    author: 'Rishika Suhane',
+    date: 'October 3, 2026',
+    readTime: '9 min read',
+    featured: false,
+    content: `
+      <p>It is late, and you have just sent your fortieth application this month. You already know most of them will go unanswered. If you are wondering <strong>how to get a job at a startup</strong> right now, you are not alone.</p>
+      <p>Job hunting in the US feels harder than it has in years. Applications go out, replies rarely come back, and there is a nagging worry that AI is absorbing the very work you trained for. Startups have not stopped hiring. They are hiring fewer people, more deliberately, and through different channels. This guide explains what has changed, what founders now prioritise, and how to stand out.</p>
+
+      <h3>Key takeaways</h3>
+      <p>AI has not replaced engineers, but it has raised the bar, especially for entry-level roles. Startups want judgement: people who can design, review and direct AI. Cold applications rarely work alone. Make yourself easy to find, get a referral, and go after recently funded startups.</p>
+
+      <h3>What is really happening to startup hiring</h3>
+      <p>The reality sits somewhere between "nothing has changed" and "we are all being replaced." Some teams really are smaller. Teams are shrinking after adopting AI. Across more than 60,000 US startups, net headcount stayed flat through 2024. Entry-level roles are hit hardest. Many companies have stopped posting junior developer jobs altogether.</p>
+      <p>But AI is not a 10x machine yet. In <a href="https://getdx.com/blog/ai-productivity-gains-are-10-percent-not-10x/" target="_blank" rel="noopener noreferrer">DX's data</a>, AI use rose 65%, but code output rose under 8%. Writing code was never the bottleneck. And when software gets cheaper to build, companies want more of it. Engineers are still needed. What has changed is which engineers, and what they need to show.</p>
+
+      <h3>What startups still hire for in the AI era</h3>
+      <p>Writing code is no longer where the value lies. Translating well-defined tickets into routine code is precisely what AI now handles well. Here is what still matters:</p>
+      <ul>
+        <li><strong>System design.</strong> AI fills gaps with assumptions and struggles with large codebases. Write up one design decision you made and why.</li>
+        <li><strong>Reviewing AI's work.</strong> AI often sounds sure even when it is wrong. Show where you caught and fixed AI-generated bugs.</li>
+        <li><strong>Product sense.</strong> AI does not know what the business needs. Explain who your project was for and what it solved.</li>
+        <li><strong>Specialist skills.</strong> Infrastructure and security need real expertise. Certifications, on-call experience or a deployed system.</li>
+      </ul>
+      <p>Founders want people who care about what they are building. In his <a href="https://alexw.substack.com/p/hire" target="_blank" rel="noopener noreferrer">2020 essay on hiring</a>, Scale AI founder Alexandr Wang makes that kind of care his main filter. Someone who is only there for the paycheck rarely lasts at a startup, and founders can usually tell.</p>
+      <p>The interviews are changing too. Some hiring managers now hand candidates buggy code to review. Others watch how candidates talk through a problem. Explaining your thinking now matters more than solving puzzles fast. You may also meet AI before you meet a person. 63% of job seekers have now faced an AI-run interview (<a href="https://www.greenhouse.com/newsroom/63-of-job-seekers-have-faced-an-ai-interview-most-havent-had-a-good-one-yet" target="_blank" rel="noopener noreferrer">Greenhouse, 2026</a>). Treat it like a real interview: prepare, speak clearly, and give specific examples.</p>
+
+      <h3>How startups actually find people</h3>
+      <p>Most people picture one path: apply, wait, get a call. At startups, that is only one of three doors. Applying brings in 40% to 44% of startup hires, but startups get roughly 300 to 340 applications per hire, and only 3% of cold applicants get an interview. Being found by the company brings in 20% to 30% of hires, more at smaller startups. Referrals bring in 12% to 19%, and 40% of referred candidates get an interview.</p>
+      <p>The takeaway: applying is the most crowded route in. Being discovered and being vouched for are far less competitive.</p>
+
+      <h3>Three ways to get a job at a startup</h3>
+      <p><strong>01 Get found.</strong> Up to 30% of startup hires are people the company contacted first. Your LinkedIn works for you even when you are not applying. Write a headline that says what you do — "Backend engineer, Python and AWS" gets found, "Open to opportunities" does not. List your main tools and the kind of product you have built. Link a GitHub repo or portfolio, ideally showing how you use AI. Match your resume and show your US city and state clearly.</p>
+      <p><strong>02 Get referred.</strong> You do not need a close friend inside the company, just one genuine conversation with someone connected to it. Start close — former managers, teammates and classmates are often one step from a hiring manager. Ask for an introduction, not a referral link. A real "you should talk to this person" carries more weight. Send two lines they can forward: who you are and why that company.</p>
+      <p><strong>03 Apply, then reach out.</strong> Apply first, so you are in their system. Find the person — at a small startup, the founder or first engineering lead is usually the one hiring. Send a short, specific note, then follow up once after a week. Be realistic: messages help most when you meet about 80% of the requirements. If you are far off, a message rarely changes the outcome.</p>
+
+      <h3>Target recently funded US startups</h3>
+      <p>Recently funded startups hiring for new roles are your best target. Their roles are new, the hiring plan is still being set, and they have not been buried in applications yet.</p>
+      <p>Where to find them: <strong>Crunchbase</strong> (free tier) — filter by recent funding and US location. <strong>Wellfound</strong> — early-stage startups and their open roles. <strong>Y Combinator batch lists</strong> — new companies hiring their first engineers. <strong>TechCrunch and LinkedIn</strong> — funding news and announcement posts.</p>
+      <p>Move within 1 to 4 weeks of the announcement. Mention the raise and the plan — founders usually say what the money is for, so show how you can help with exactly that. Use the product first; some startups hire from their own users. Fresh funding means runway, which lowers your risk as an early hire.</p>
+
+      <h3>A message you can send a founder</h3>
+      <p>Founders read messages on their phones between meetings. Keep it to four or five lines:</p>
+      <p><em>Hi [Name], congrats on the [round] announcement. I just applied for the [role]. I have been trying [product] and liked [one specific thing]. You mentioned the funding will go toward [their stated plan], which is close to what I have been working on. Recently I built [project], which [one-line result]: [link]. If it seems like a fit, I would be glad to chat. Thanks either way!</em></p>
+      <p>It proves you applied, did your homework and can back up your interest. It is also easy to reply to.</p>
+
+      <h3>Two questions job seekers keep asking</h3>
+      <p><strong>I was rejected but the role is still open five months later. Should I reapply?</strong> Usually not for the same role right away. Many companies wait 12 to 18 months before they look at a rejected candidate again. Apply for a different or newer role at the same company, especially after a funding round. Reach out once something has changed — a new project, a new skill or a new job title. Remember a long-open role is not always a real one.</p>
+      <p><strong>I am entry-level. Am I done for?</strong> It is harder, but far from hopeless. Startups count anything that shows you have done real work: an internship, freelance or contract work for a real client, open-source contributions, or a project with real users. Add at least one to your resume and LinkedIn before you apply.</p>
+
+      <h3>Mistakes that keep you invisible</h3>
+      <p><strong>Letting an AI tool mass-apply for you.</strong> 38% of job seekers say they mass-apply using AI tools. Those applications look alike and get filtered out first.</p>
+      <p><strong>A LinkedIn that does not match your resume.</strong> Startups now screen for <a href="/blog/fake-job-candidates">fake job candidates</a>, so mismatches make honest people look suspicious.</p>
+      <p><strong>Hiding how you use AI.</strong> Startups want to know you use it well. Talk about it openly, including where it got things wrong.</p>
+      <p><strong>Reading silence as rejection.</strong> 61% of job seekers have been ghosted after an interview. No reply often just means nobody had time.</p>
+      <p>Small things that get good candidates missed: uploading a Word file instead of PDF, a vague file name like "Resume_final_v3.pdf" instead of "Jane-Doe-Backend-Engineer.pdf", and missing contact details like a phone number or email.</p>
+
+      <h3>Your first-week action plan</h3>
+      <p>You do not need to do everything at once. Start here: rewrite your LinkedIn headline and save your resume as a PDF named with your name. Pick five recently funded US startups that excite you. Try one of their products and note what you like. Apply to one role, then send the founder a short message. Ask one former coworker or manager for an introduction.</p>
+
+      <h3>Where HeroScouter fits in</h3>
+      <p>HeroScouter recruits for funded startups. We help open the sourced door. We search for people, talk to them, and introduce the right ones to founders. Each introduction comes with a short note on why the person fits.</p>
+      <p><a href="https://www.ashbyhq.com/talent-trends-report/reports/startup-hiring" target="_blank" rel="noopener noreferrer">Ashby</a> found that at startups under 25 people, time to hire drops by almost 30% when a recruiter is involved: about 42 days instead of 62. For you, that means a real person putting your name in front of the founder, instead of your resume sitting in a pile.</p>
+      <p>Looking for your next startup role? <a href="/candidates">Join the HeroScouter talent network</a> and we will reach out when there is a fit.</p>
+
+      <h3>FAQs</h3>
+      <p><strong>Is AI replacing software engineers at startups?</strong> Not outright, but teams are smaller and entry-level roles are hit hardest. Most companies see only 5% to 15% productivity gains from AI.</p>
+      <p><strong>How do I get a job at a startup without a referral?</strong> Make your LinkedIn easy to find — 20% to 30% of startup hires are sourced — and message the founder after you apply.</p>
+      <p><strong>How do I find startups that are hiring?</strong> Look for recently funded US startups on Crunchbase, Wellfound and Y Combinator batch lists, and reach out within a few weeks of the announcement.</p>
+      <p><strong>Should I reapply for a job I was rejected from?</strong> Usually not right away. Apply for a different role, or reach out once something meaningful has changed.</p>
     `,
   },
 ];
