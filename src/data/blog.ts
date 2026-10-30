@@ -5,7 +5,7 @@ import cover4 from "../imports/blogpost4.jpg";
 import cover5 from "../imports/blog_post5.jpeg";
 import cover6 from "../imports/blog_post_6.jpeg";
 import cover7 from "../imports/blog_post7.png";
-import cover8 from "../imports/blog_post8.jpg";
+import cover8 from "../imports/blog_post8.png";
 
 export interface BlogPost {
   id: string;
